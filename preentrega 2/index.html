@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ensayo — título a definir</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===================================================================
+       CAPA DE NODOS
+       Fondo fijo con las obras conectadas entre sí. Los nodos NO se
+       escriben a mano acá: script.js los genera a partir de NODE_GROUPS
+       (una entrada por carpeta — images/salapays/, images/malba/ — con su
+       lista de archivos, epígrafe y clase de sombra). Para agregar una
+       obra nueva alcanza con sumar un archivo a la carpeta correspondiente
+       y una línea al array `images` de ese grupo en script.js; el layout,
+       las conexiones y el arrastre/lightbox se arman solos.
+  =================================================================== -->
+  <div class="nodes-layer">
+    <svg class="connections" id="connections" aria-hidden="true"></svg>
+  </div>
+
+  <!-- ===================================================================
+       TEXTO CENTRAL
+  =================================================================== -->
+  <main class="essay">
+    <header class="essay-header">
+      <h1>Museos web</h1>
+      <p class="byline">Pedro Segalerba — <time datetime="2026-09">ACDT 2C 2026 - FADU - UBA</time></p>
+    </header>
+
+    <section class="essay-body">
+      <p>
+        <!-- ===================================================================
+        [Texto de prueba — reemplazar por el ensayo real. Este párrafo
+        muestra las clases de resaltado disponibles: podés marcar un
+        <mark class="mark-name">nombre propio</mark>, una
+        <mark class="mark-date">fecha</mark> o una
+        <mark class="mark-note">idea que querés destacar</mark> sin salir
+        del flujo del texto, tal como en la referencia que mandaste.
+        =================================================================== -->
+      </p>
+      <p>
+        Antes de asistir a las visitas de cada museo o sala, me gusta indagar 
+        en sus páginas web, como una forma de poder anticiparme a lo que voy 
+        a ver y de acceder a información adicional que pueda aportar a la visita. 
+        Una web resulta algo casi imprescindible para cualquier institución 
+        museística hoy en día. La posibilidad de poder consultar horarios, 
+        exposiciones activas, y catálogo es algo que cualquier visitante toma 
+        como algo dado, esperable. En la web, como en cada material de difusión, 
+        los museos siguen determinadas líneas de diseño de acuerdo a la identidad 
+        que pretenden mantener. En este ensayo, me propongo analizar cómo se trasladan 
+        esas decisiones y construcción de identidad a la web, comparando las páginas 
+        de <a href="https://parquedelamemoria.org.ar/arte-sala-pays/" target="_blank" rel="noopener noreferrer">Sala Pays</a>, 
+        <a href="https://www.malba.org.ar/" target="_blank" rel="noopener noreferrer">el Malba</a>, y <a href="https://www.coleccionamalita.org.ar/" target="_blank" rel="noopener noreferrer">
+        la Colección Amalita</a>; como también explorar 
+        las potencialidades y pérdidas de internet como un espacio de exhibición, 
+        más allá de su uso como espacio de archivo o catálogo. 
+      </p>
+      <p>
+      <!-- ===================================================================
+        Podés seguir escribiendo acá, agregar más
+        <code>&lt;section&gt;</code> por bloque temático, y enlazar hacia
+        afuera con un link normal como
+        <a href="#">este</a> — el subrayado y el color ya están
+        definidos en <code>css/style.css</code>.
+        =================================================================== -->
+      </p>
+    </section>
+  </main>
+
+  <!-- ===================================================================
+       LIGHTBOX — se abre al clickear cualquier nodo
+  =================================================================== -->
+  <div class="lightbox" id="lightbox" hidden>
+    <button class="lightbox-close" id="lightbox-close" aria-label="Cerrar imagen">×</button>
+    <figure>
+      <img id="lightbox-img" src="" alt="">
+      <figcaption id="lightbox-caption"></figcaption>
+    </figure>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
