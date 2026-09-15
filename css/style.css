@@ -343,6 +343,7 @@ mark {
      de script.js, que agrega/saca la clase .mostrar-recorrido en <body>. */
   .nodes-layer { display: none; }
   body.mostrar-recorrido .nodes-layer { display: block; }
+   .node-img { width: calc(var(--size) * 0.55); }
 
   .essay { padding: calc(8vh + 3rem) 1.25rem 14vh; background: var(--paper); }
   .essay-body p { text-align: left; }
