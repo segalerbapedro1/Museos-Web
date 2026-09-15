@@ -12,6 +12,16 @@
 <body>
 
   <!-- ===================================================================
+       NAV — saltos entre "Ensayo" y "Recorrido". Ancla simple con
+       href="#id", nada de JS necesario para que funcione el salto (el
+       scroll suave lo da `scroll-behavior: smooth` en style.css).
+  =================================================================== -->
+  <nav class="site-nav" aria-label="Secciones del sitio">
+    <a href="#ensayo">Ensayo</a>
+    <a href="#recorrido">Recorrido</a>
+  </nav>
+
+  <!-- ===================================================================
        CAPA DE NODOS
        Fondo fijo con las obras conectadas entre sí. Los nodos NO se
        escriben a mano acá: script.js los genera a partir de NODE_GROUPS
@@ -20,59 +30,67 @@
        obra nueva alcanza con sumar un archivo a la carpeta correspondiente
        y una línea al array `images` de ese grupo en script.js; el layout,
        las conexiones y el arrastre/lightbox se arman solos.
+
+       Es UNA sola capa fixed que cubre toda la pantalla y se comparte
+       entre las dos secciones de abajo: en "Ensayo" queda de fondo,
+       parcialmente tapada por el panel de texto; en "Recorrido" no hay
+       ningún panel encima, así que se ve completa. En mobile queda oculta
+       por CSS excepto mientras "Recorrido" está en pantalla (ver
+       style.css y el IntersectionObserver al final de script.js).
   =================================================================== -->
   <div class="nodes-layer">
     <svg class="connections" id="connections" aria-hidden="true"></svg>
   </div>
 
   <!-- ===================================================================
-       TEXTO CENTRAL
+       SECCIÓN "ENSAYO" — el texto, en su propia sección para poder
+       volver acá con el link del nav.
   =================================================================== -->
-  <main class="essay">
-    <header class="essay-header">
-      <h1>Museos web</h1>
-      <p class="byline">Pedro Segalerba — <time datetime="2026-09">ACDT 2C 2026 - FADU - UBA</time></p>
-    </header>
+  <section id="ensayo" class="page-section">
+    <main class="essay">
+      <header class="essay-header">
+        <h1>Título del ensayo</h1>
+        <p class="byline">Pedro Segalerba — <time datetime="2026-09">septiembre 2026</time></p>
+      </header>
 
-    <section class="essay-body">
-      <p>
-        <!-- ===================================================================
-        [Texto de prueba — reemplazar por el ensayo real. Este párrafo
-        muestra las clases de resaltado disponibles: podés marcar un
-        <mark class="mark-name">nombre propio</mark>, una
-        <mark class="mark-date">fecha</mark> o una
-        <mark class="mark-note">idea que querés destacar</mark> sin salir
-        del flujo del texto, tal como en la referencia que mandaste.
-        =================================================================== -->
-      </p>
-      <p>
-        Antes de asistir a las visitas de cada museo o sala, me gusta indagar 
-        en sus páginas web, como una forma de poder anticiparme a lo que voy 
-        a ver y de acceder a información adicional que pueda aportar a la visita. 
-        Una web resulta algo casi imprescindible para cualquier institución 
-        museística hoy en día. La posibilidad de poder consultar horarios, 
-        exposiciones activas, y catálogo es algo que cualquier visitante toma 
-        como algo dado, esperable. En la web, como en cada material de difusión, 
-        los museos siguen determinadas líneas de diseño de acuerdo a la identidad 
-        que pretenden mantener. En este ensayo, me propongo analizar cómo se trasladan 
-        esas decisiones y construcción de identidad a la web, comparando las páginas 
-        de <a href="https://parquedelamemoria.org.ar/arte-sala-pays/" target="_blank" rel="noopener noreferrer">Sala Pays</a>, 
-        <a href="https://www.malba.org.ar/" target="_blank" rel="noopener noreferrer">el Malba</a>, y <a href="https://www.coleccionamalita.org.ar/" target="_blank" rel="noopener noreferrer">
-        la Colección Amalita</a>; como también explorar 
-        las potencialidades y pérdidas de internet como un espacio de exhibición, 
-        más allá de su uso como espacio de archivo o catálogo. 
-      </p>
-      <p>
-      <!-- ===================================================================
-        Podés seguir escribiendo acá, agregar más
-        <code>&lt;section&gt;</code> por bloque temático, y enlazar hacia
-        afuera con un link normal como
-        <a href="#">este</a> — el subrayado y el color ya están
-        definidos en <code>css/style.css</code>.
-        =================================================================== -->
-      </p>
-    </section>
-  </main>
+      <section class="essay-body">
+        <p>
+          [Texto de prueba — reemplazar por el ensayo real. Este párrafo
+          muestra las clases de resaltado disponibles: podés marcar un
+          <mark class="mark-name">nombre propio</mark>, una
+          <mark class="mark-date">fecha</mark> o una
+          <mark class="mark-note">idea que querés destacar</mark> sin salir
+          del flujo del texto, tal como en la referencia que mandaste.
+        </p>
+        <p>
+          Cada objeto exhibido funciona como una pieza de convicción: el
+          arma, la peluca, la cartera. Ninguno prueba nada por sí solo — es
+          la disposición entre ellos, el modo en que un cuerpo del delito se
+          arma sobre una vitrina, lo que empieza a sugerir un relato. En la
+          pared de al lado, dos versiones del mismo rostro se disputan un
+          veredicto: <mark class="mark-name">culpable</mark> de un lado,
+          <mark class="mark-name">inocente</mark> del otro, como si la
+          culpa fuera también una cuestión de encuadre.
+        </p>
+        <p>
+          Podés seguir escribiendo acá, agregar más
+          <code>&lt;section&gt;</code> por bloque temático, y enlazar hacia
+          afuera con un link normal como
+          <a href="#">este</a> — el subrayado y el color ya están
+          definidos en <code>css/style.css</code>.
+        </p>
+      </section>
+    </main>
+  </section>
+
+  <!-- ===================================================================
+       SECCIÓN "RECORRIDO" — misma capa de nodos de arriba, pero sin
+       ningún panel de texto encima: acá se ven solas, para recorrerlas
+       sueltas. En mobile es la única forma de verlas (ver style.css).
+  =================================================================== -->
+  <section id="recorrido" class="page-section page-section--recorrido">
+    <p class="recorrido-hint">Recorrido — arrastrá o tocá una obra para ampliarla.</p>
+  </section>
 
   <!-- ===================================================================
        LIGHTBOX — se abre al clickear cualquier nodo

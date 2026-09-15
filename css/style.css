@@ -36,7 +36,10 @@
 
 * { box-sizing: border-box; }
 
-html { color-scheme: light; }
+html {
+  color-scheme: light;
+  scroll-behavior: smooth; /* saltos suaves al usar los links del nav */
+}
 
 body {
   margin: 0;
@@ -61,6 +64,69 @@ code {
   background: rgba(20, 18, 16, 0.06);
   padding: 0.1em 0.35em;
   border-radius: 3px;
+}
+
+/* ==========================================================================
+   NAV — salta entre "Ensayo" y "Recorrido"
+   ========================================================================== */
+.site-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5; /* por encima de los nodos y las secciones, por debajo del lightbox */
+  display: flex;
+  justify-content: center;
+  gap: 1.75rem;
+  padding: 0.85rem 1rem;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.site-nav a {
+  color: var(--ink);
+  text-decoration: none;
+  padding-bottom: 0.15rem;
+  border-bottom: 1px solid transparent;
+}
+.site-nav a:hover,
+.site-nav a:focus-visible {
+  border-bottom-color: var(--ink);
+}
+
+/* ==========================================================================
+   SECCIONES — "Ensayo" y "Recorrido" son dos pantallas distintas del mismo
+   scroll, cada una ancla de su propio link en el nav.
+   ========================================================================== */
+.page-section {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+}
+
+.page-section--recorrido {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 8vh;
+}
+
+.recorrido-hint {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  padding: 0.55rem 1rem;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  color: rgba(20, 18, 16, 0.6);
+  background: var(--paper-panel);
+  border-radius: 3px;
+  pointer-events: none; /* que no le robe el click/arrastre a las obras de atrás */
 }
 
 /* ==========================================================================
@@ -169,7 +235,7 @@ code {
   z-index: 2;
   max-width: 640px;
   margin: 0 auto;
-  padding: 14vh 2rem 20vh;
+  padding: calc(14vh + 2.5rem) 2rem 20vh; /* el +2.5rem deja lugar al nav fijo */
   background: var(--paper-panel);
   backdrop-filter: blur(1.5px);
 }
@@ -266,9 +332,17 @@ mark {
    RESPONSIVE / ACCESIBILIDAD
    ========================================================================== */
 @media (max-width: 760px) {
+  /* En mobile los nodos no van de fondo del ensayo (taparían el texto en
+     una pantalla chica): quedan ocultos salvo mientras la sección
+     "Recorrido" está en pantalla — ver el IntersectionObserver al final
+     de script.js, que agrega/saca la clase .mostrar-recorrido en <body>. */
   .nodes-layer { display: none; }
-  .essay { padding: 8vh 1.25rem 14vh; background: var(--paper); }
+  body.mostrar-recorrido .nodes-layer { display: block; }
+
+  .essay { padding: calc(8vh + 3rem) 1.25rem 14vh; background: var(--paper); }
   .essay-body p { text-align: left; }
+
+  .site-nav { gap: 1.1rem; font-size: 0.68rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

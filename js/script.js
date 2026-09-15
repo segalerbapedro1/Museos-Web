@@ -88,7 +88,6 @@ const NEIGHBORS_PER_NODE = 2;
 
 const nodesLayer = document.querySelector(".nodes-layer");
 const svg = document.getElementById("connections");
-const isMobile = window.matchMedia("(max-width: 760px)").matches;
 
 let nodes = [];           // elementos <figure class="node-img"> ya en el DOM
 let lineEls = [];
@@ -392,21 +391,45 @@ document.addEventListener("keydown", (e) => {
 
 // ===========================================================================
 // INICIALIZACIÓN
-// En mobile ni siquiera se construyen los nodos: la capa de fondo va oculta
-// por CSS (.nodes-layer { display: none }) y así se evita bajar decenas de
-// imágenes que nunca se van a ver.
+// Los nodos se construyen siempre (de escritorio y de mobile): en mobile
+// los necesita la sección "Recorrido" para poder mostrarlos ahí. Lo que
+// cambia según el tamaño de pantalla es si se ven todo el tiempo de fondo
+// (desktop) o solo dentro de "Recorrido" (mobile, ver más abajo y
+// style.css). Como las imágenes tienen loading="lazy", en mobile el
+// navegador no baja las que están ocultas hasta que la sección se muestra.
 // ===========================================================================
 
-if (!isMobile) {
-  const { builtNodes, positions, groupIndices } = buildAllNodes();
-  nodes = builtNodes;
-  connectionPairs = buildConnectionPairs(positions, groupIndices);
+const { builtNodes, positions, groupIndices } = buildAllNodes();
+nodes = builtNodes;
+connectionPairs = buildConnectionPairs(positions, groupIndices);
 
-  attachNodeInteractions(nodes);
+attachNodeInteractions(nodes);
 
-  buildLines();
-  updateLines();
-  requestAnimationFrame(loop);
+buildLines();
+updateLines();
+requestAnimationFrame(loop);
 
-  window.addEventListener("resize", updateLines);
+window.addEventListener("resize", updateLines);
+
+// ===========================================================================
+// SECCIÓN "RECORRIDO" EN MOBILE
+// La capa de nodos es una sola y es fixed (cubre toda la pantalla siempre,
+// esté donde esté en el HTML). En desktop se deja ver todo el tiempo. En
+// mobile, en cambio, arrancaría tapando el texto del "Ensayo" — por eso ahí
+// queda oculta por CSS y solo se muestra mientras la sección "Recorrido"
+// está en pantalla, agregando/sacando la clase .mostrar-recorrido en
+// <body> según entra o sale del viewport.
+// ===========================================================================
+
+const recorridoSection = document.getElementById("recorrido");
+if (recorridoSection && "IntersectionObserver" in window) {
+  const recorridoObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        document.body.classList.toggle("mostrar-recorrido", entry.isIntersecting);
+      });
+    },
+    { threshold: 0.15 }
+  );
+  recorridoObserver.observe(recorridoSection);
 }
