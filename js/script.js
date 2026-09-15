@@ -61,21 +61,21 @@ const NODE_GROUPS = {
       { file: "A_973.jpg", alt: "Obra de la colección MALBA" },
       { file: "A_980.jpg", alt: "Obra de la colección MALBA" },
       { file: "A_982.jpg", alt: "Obra de la colección MALBA" },
-      { file: "alys.jpg", alt: "alys — obra de la colección MALBA" },
-      { file: "Arden-Quin-Composicion-001.jpg", alt: "Arden Quin Composicion — obra de la colección MALBA" },
-      { file: "Barradas-Quiosco-de-Canaletas-008.jpg", alt: "Barradas Quiosco de Canaletas — obra de la colección MALBA" },
-      { file: "Berni-Manifestacion-023-1.jpg", alt: "Berni Manifestacion — obra de la colección MALBA" },
-      { file: "De-la-vega-armado-ret-1.jpg", alt: "De la vega armado ret — obra de la colección MALBA" },
-      { file: "Do-Amaral-Abaporu-067-1.jpg", alt: "Do Amaral Abaporu — obra de la colección MALBA" },
-      { file: "Kahlo-Autorretrato-con-chango-y-loro-102-1.jpg", alt: "Kahlo Autorretrato con chango y loro — obra de la colección MALBA" },
-      { file: "Lam-la-manana-verde-108-1.jpg", alt: "Lam la manana verde — obra de la colección MALBA" },
-      { file: "Martins-O-impossivel-119.jpg", alt: "Martins O impossivel — obra de la colección MALBA" },
-      { file: "Matta-The-disasters-of-Mysticism-122.jpg", alt: "Matta The disasters of Mysticism — obra de la colección MALBA" },
-      { file: "Oiticica-Metaesquema-2001-124-137-1.jpg", alt: "Oiticica Metaesquema — obra de la colección MALBA" },
-      { file: "Pettoruti-Vallombrosa-151-1.jpg", alt: "Pettoruti Vallombrosa — obra de la colección MALBA" },
-      { file: "Portinari-Festa-de-Sao-Joao-171-1.jpg", alt: "Portinari Festa de Sao Joao — obra de la colección MALBA" },
-      { file: "Torres-Garcia-Composicion-simetrica-universal-200.jpg", alt: "Torres Garcia Composicion simetrica universal — obra de la colección MALBA" },
-      { file: "Xul-Pareja2001-181-212.jpg", alt: "Xul Pareja2001 — obra de la colección MALBA" },
+      { file: "alys.jpg", alt: "Obra de Francis Alÿs, colección MALBA", title: "Francis Alÿs" },
+      { file: "Arden-Quin-Composicion-001.jpg", alt: "Composición, de Carmelo Arden Quin, colección MALBA", title: "Carmelo Arden Quin, Composición" },
+      { file: "Barradas-Quiosco-de-Canaletas-008.jpg", alt: "Quiosco de Canaletas, de Rafael Barradas, colección MALBA", title: "Rafael Barradas, Quiosco de Canaletas" },
+      { file: "Berni-Manifestacion-023-1.jpg", alt: "Manifestación, de Antonio Berni, colección MALBA", title: "Antonio Berni, Manifestación" },
+      { file: "De-la-vega-armado-ret-1.jpg", alt: "Retrato armado, de Jorge de la Vega, colección MALBA", title: "Jorge de la Vega, Retrato armado" },
+      { file: "Do-Amaral-Abaporu-067-1.jpg", alt: "Abaporu, de Tarsila do Amaral, colección MALBA", title: "Tarsila do Amaral, Abaporu" },
+      { file: "Kahlo-Autorretrato-con-chango-y-loro-102-1.jpg", alt: "Autorretrato con chango y loro, de Frida Kahlo, colección MALBA", title: "Frida Kahlo, Autorretrato con chango y loro" },
+      { file: "Lam-la-manana-verde-108-1.jpg", alt: "La mañana verde, de Wifredo Lam, colección MALBA", title: "Wifredo Lam, La mañana verde" },
+      { file: "Martins-O-impossivel-119.jpg", alt: "O impossível, de Maria Martins, colección MALBA", title: "Maria Martins, O impossível" },
+      { file: "Matta-The-disasters-of-Mysticism-122.jpg", alt: "The Disasters of Mysticism, de Roberto Matta, colección MALBA", title: "Roberto Matta, The Disasters of Mysticism" },
+      { file: "Oiticica-Metaesquema-2001-124-137-1.jpg", alt: "Metaesquema, de Hélio Oiticica, colección MALBA", title: "Hélio Oiticica, Metaesquema" },
+      { file: "Pettoruti-Vallombrosa-151-1.jpg", alt: "Vallombrosa, de Emilio Pettoruti, colección MALBA", title: "Emilio Pettoruti, Vallombrosa" },
+      { file: "Portinari-Festa-de-Sao-Joao-171-1.jpg", alt: "Festa de São João, de Cândido Portinari, colección MALBA", title: "Cândido Portinari, Festa de São João" },
+      { file: "Torres-Garcia-Composicion-simetrica-universal-200.jpg", alt: "Composición simétrica universal, de Joaquín Torres García, colección MALBA", title: "Joaquín Torres García, Composición simétrica universal" },
+      { file: "Xul-Pareja2001-181-212.jpg", alt: "Pareja, de Xul Solar, colección MALBA", title: "Xul Solar, Pareja" },
     ],
   },
 };
@@ -155,6 +155,7 @@ function buildAllNodes() {
         shadowClass: group.shadowClass,
         src: group.folder + img.file,
         alt: img.alt,
+        title: img.title || "", // autor/nombre de la obra deducido del archivo, si se pudo
         id: `node-${groupKey}-${i}`,
       });
     });
@@ -180,7 +181,8 @@ function buildAllNodes() {
     const button = document.createElement("button");
     button.className = "node-trigger";
     button.dataset.full = data.src;
-    button.setAttribute("aria-label", `Ampliar obra — ${data.caption}`);
+    button.dataset.title = data.title;
+    button.setAttribute("aria-label", `Ampliar obra — ${data.title || data.caption}`);
 
     const img = document.createElement("img");
     img.src = data.src;
@@ -357,9 +359,14 @@ let lastFocused = null;
 function openLightbox(trigger) {
   const src = trigger.dataset.full;
   const img = trigger.querySelector("img");
+  const museo = trigger.closest(".node-img").querySelector("figcaption").textContent;
+  const titulo = trigger.dataset.title; // autor + obra deducidos del nombre de archivo (solo MALBA, cuando se pudo)
+
   lightboxImg.src = src;
   lightboxImg.alt = img.alt;
-  lightboxCaption.textContent = trigger.closest(".node-img").querySelector("figcaption").textContent;
+  // Si se pudo deducir el autor/nombre de la obra del archivo, se muestra
+  // "Autor, Obra - Museo"; si no, queda solo el nombre del museo como antes.
+  lightboxCaption.textContent = titulo ? `${titulo} - ${museo}` : museo;
   lightbox.hidden = false;
   lastFocused = trigger;
   lightboxClose.focus();
