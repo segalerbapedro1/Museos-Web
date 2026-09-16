@@ -44,79 +44,83 @@
 
   <!-- ===================================================================
        SECCIÓN "ENSAYO" — el texto, en su propia sección para poder
-       volver acá con el link del nav.
+       volver acá con el link del nav. Cada tema va en su propio
+       <section class="essay-body"> (Introducción / Sala Pays / Colección
+       Amalita), siempre cerrado antes de abrir el siguiente — así todos
+       los párrafos reciben exactamente el mismo estilo.
   =================================================================== -->
   <section id="ensayo" class="page-section">
     <main class="essay">
       <header class="essay-header">
         <h1>Museos web</h1>
-        <p class="byline">Pedro Segalerba — <time datetime="2026-09"> ACDT 2C 2026 - FADU - UBA</time></p>
+        <p class="byline">Pedro Segalerba — <time datetime="2026-09">ACDT 2C 2026 - FADU - UBA</time></p>
       </header>
-<!-- ===================================================================
-          [Texto de prueba — reemplazar por el ensayo real. Este párrafo
-          muestra las clases de resaltado disponibles: podés marcar un
-          <mark class="mark-name">nombre propio</mark>, una
-          <mark class="mark-date">fecha</mark> o una
-          <mark class="mark-note">idea que querés destacar</mark> sin salir
-          del flujo del texto, tal como en la referencia que mandaste.
-            =================================================================== -->
-      <h3>Introducción</h3>
-        <section class="essay-body">
-          <p>
-          Antes de visitar un museo o sala, me gusta indagar en sus páginas web, 
-          como una forma de anticiparme a lo que voy a ver y de acceder a información adicional 
-          que pueda aportar a la visita. Una web resulta algo casi imprescindible para cualquier 
-          institución museística hoy en día. La posibilidad de poder consultar horarios, exposiciones activas, 
-          y catálogo es algo que cualquier visitante toma como algo dado, esperable. En la web, como en 
-          cada material de difusión, los museos siguen determinadas líneas de diseño de acuerdo a la 
-          identidad que pretenden mantener. En este ensayo, me propongo analizar cómo se trasladan esas 
-          decisiones y construcción de identidad a la web, comparando las páginas 
-          de <a href="https://parquedelamemoria.org.ar/arte-sala-pays/" target="_blank"> Sala Pays</a>,
-          <a href="https://malba.org.ar/" target="_blank"> el Malba</a>, y <a href="https://coleccionamalita.org.ar/en" target="_blank"> la Colección Amalita</a>; 
-          como también explorar las potencialidades y carencias de internet como un espacio de exhibición, 
-          más allá de su uso como espacio de archivo o catálogo. Para ello me basaré en los textos “Diseño y arte contemporáneo: el desafío de los museos”, 
-          de Mariel Szilfman en Revista Kepes, #12; “La historia en (las) imágenes: archivo, memoria, video” de Mariela Cantú y
-          “Video y Teoría de las Imágenes: I. Máquinas de Imágenes: una cuestión de línea general”, de Philippe Dubois en Vidéo, Cine, Godard.
-          </p>
-          
-      <h3>Sala Pays</h3>
-        <section class="essay-body">
-          <p>
-            A comparación de los demás casos a analizar, la Sala Pays no es un museo o institución, 
-            sino <span class="subrayado"> una sala de exposición sin una colección permanente</span>.
-            Esta condición se ve reflejada en el hecho de que La Sala Pays no tiene una página web 
-            dedicada, sino que toda la información que refiere a ella está en una sección llamada “arte” 
-            de la web del Parque de la Memoria. Al no tener una colección permanente, no hay una sección 
-            dedicada a ello, sino que se priorizan las exposiciones temporales y las esculturas presentes 
-            en el parque. 
-            <figure class="essay-figure">
-              <button class="essay-image-trigger" type="button" aria-label="Ampliar imagen">
-                <img src="images/cuerpotexto/salapaysinicio.png" alt="Inicio sección web Sala Pays">
-              </button>
-              <figcaption>Inicio sección web Sala Pays</figcaption>
-            </figure>
-            En la sección de exposiciones, se ve primero una sección con la exposición actual 
-            y luego otra con las exposiciones pasadas que llega hasta el año 2011. La página no propone 
-            ningún parámetro de búsqueda predeterminado, solo un buscador en el que se puede escribir 
-            cualquier cosa que uno tenga interés en buscar. 
-          </p>
-      <h3>Colección Amalita</h3>
-          <p>
-            La web de la Colección Amalita distingue en su barra de navegación entre 
-            exposición, colección, publicaciones, información, programa educativo y tienda. 
-            Además, gran parte de la pantalla de inicio está ocupada por un slider que 
-            deja ver las dos exposiciones actuales y por último la colección permanente. 
-          </p>
-           <!-- ===================================================================
-          Podés seguir escribiendo acá, agregar más
-          <code>&lt;section&gt;</code> por bloque temático, y enlazar hacia
-          afuera con un link normal como
-          <a href="#">este</a> — el subrayado y el color ya están
-          definidos en <code>css/style.css</code>.
-          =================================================================== -->
+
+      <section class="essay-body">
+        <h3>Introducción</h3>
+        <p>
+          Antes de visitar un museo o sala, me gusta indagar en sus páginas web,
+          como una forma de anticiparme a lo que voy a ver y de acceder a información adicional
+          que pueda aportar a la visita. Una web resulta algo casi imprescindible para cualquier
+          institución museística hoy en día. La posibilidad de poder consultar horarios, exposiciones activas,
+          y catálogo es algo que cualquier visitante toma como algo dado, esperable. En la web, como en
+          cada material de difusión, los museos siguen determinadas líneas de diseño de acuerdo a la
+          identidad que pretenden mantener. En este ensayo, me propongo analizar cómo se trasladan esas
+          decisiones y construcción de identidad a la web, comparando las páginas
+          de <a href="https://parquedelamemoria.org.ar/arte-sala-pays/" target="_blank" rel="noopener">Sala Pays</a>,
+          <a href="https://malba.org.ar/" target="_blank" rel="noopener">el Malba</a>, y
+          <a href="https://coleccionamalita.org.ar/en" target="_blank" rel="noopener">la Colección Amalita</a>;
+          como también explorar las potencialidades y carencias de internet como un espacio de exhibición,
+          más allá de su uso como espacio de archivo o catálogo. Para ello me basaré en los textos
+          “Diseño y arte contemporáneo: el desafío de los museos”, de Mariel Szilfman en Revista Kepes, #12;
+          “La historia en (las) imágenes: archivo, memoria, video” de Mariela Cantú y
+          “Video y Teoría de las Imágenes: I. Máquinas de Imágenes: una cuestión de línea general”,
+          de Philippe Dubois en Vidéo, Cine, Godard.
+        </p>
       </section>
+
+      <section class="essay-body">
+        <h3>Sala Pays</h3>
+        <p>
+          A comparación de los demás casos a analizar, la Sala Pays no es un museo o institución,
+          sino <span class="subrayado">una sala de exposición sin una colección permanente</span>.
+          Esta condición se ve reflejada en el hecho de que La Sala Pays no tiene una página web
+          dedicada, sino que toda la información que refiere a ella está en una sección llamada “arte”
+          de la web del Parque de la Memoria. Al no tener una colección permanente, no hay una sección
+          dedicada a ello, sino que se priorizan las exposiciones temporales y las esculturas presentes
+          en el parque.
+        </p>
+
+        <figure class="essay-figure">
+          <button class="essay-image-trigger" type="button" aria-label="Ampliar imagen">
+            <img src="images/cuerpotexto/salapaysinicio.png" alt="Inicio sección web Sala Pays">
+          </button>
+          <figcaption>Inicio sección web Sala Pays</figcaption>
+        </figure>
+
+        <p>
+          En la sección de exposiciones, se ve primero una sección con la exposición actual
+          y luego otra con las exposiciones pasadas que llega hasta el año 2011. La página no propone
+          ningún parámetro de búsqueda predeterminado, solo un buscador en el que se puede escribir
+          cualquier cosa que uno tenga interés en buscar.
+        </p>
+      </section>
+
+      <section class="essay-body">
+        <h3>Colección Amalita</h3>
+        <p>
+          La web de la Colección Amalita distingue en su barra de navegación entre
+          exposición, colección, publicaciones, información, programa educativo y tienda.
+          Además, gran parte de la pantalla de inicio está ocupada por un slider que
+          deja ver las dos exposiciones actuales y por último la colección permanente.
+        </p>
+      </section>
+
+      <!-- Podés seguir agregando <section class="essay-body"> por cada tema
+           nuevo, siempre con su propio <h3> y <p> bien cerrados. -->
     </main>
   </section>
+
   <!-- ===================================================================
        SECCIÓN "RECORRIDO" — misma capa de nodos de arriba, pero sin
        ningún panel de texto encima: acá se ven solas, para recorrerlas
@@ -127,7 +131,7 @@
   </section>
 
   <!-- ===================================================================
-       LIGHTBOX — se abre al clickear cualquier nodo
+       LIGHTBOX — se abre al clickear cualquier nodo o imagen del ensayo
   =================================================================== -->
   <div class="lightbox" id="lightbox" hidden>
     <button class="lightbox-close" id="lightbox-close" aria-label="Cerrar imagen">×</button>

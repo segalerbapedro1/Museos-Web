@@ -269,6 +269,8 @@ code {
   text-align: justify;
   hyphens: auto;
   margin: 0 0 1.4rem;
+}
+
 .essay-figure {
   margin: 2rem auto;
   text-align: center;
@@ -301,9 +303,6 @@ mark {
   padding: 0.02em 0.3em;
   border-radius: 2px;
 }
-.mark-name { background: var(--ink); color: var(--paper); }
-.mark-date { background: var(--mark-date); }
-.mark-note { background: var(--mark-note); }
 .mark-name { background: var(--ink); color: var(--paper); }
 .mark-date { background: var(--mark-date); }
 .mark-note { background: var(--mark-note); }
@@ -376,7 +375,7 @@ mark {
      de script.js, que agrega/saca la clase .mostrar-recorrido en <body>. */
   .nodes-layer { display: none; }
   body.mostrar-recorrido .nodes-layer { display: block; }
-   .node-img { width: calc(var(--size) * 0.22); }
+  .node-img { width: calc(var(--size) * 0.22); }
 
   .essay { padding: calc(8vh + 3rem) 1.25rem 14vh; background: var(--paper); }
   .essay-body p { text-align: left; }
