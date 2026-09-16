@@ -280,6 +280,15 @@ mark {
 .mark-name { background: var(--ink); color: var(--paper); }
 .mark-date { background: var(--mark-date); }
 .mark-note { background: var(--mark-note); }
+.mark-name { background: var(--ink); color: var(--paper); }
+.mark-date { background: var(--mark-date); }
+.mark-note { background: var(--mark-note); }
+
+.subrayado {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
 
 /* ==========================================================================
    LIGHTBOX
