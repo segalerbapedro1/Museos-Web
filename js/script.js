@@ -389,6 +389,22 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && !lightbox.hidden) closeLightbox();
 });
 
+// Reutiliza el mismo lightbox de las obras para las imágenes sueltas
+// dentro del texto del ensayo.
+document.querySelectorAll(".essay-image-trigger").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const img = btn.querySelector("img");
+    const caption = btn.closest("figure").querySelector("figcaption");
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt;
+    lightboxCaption.textContent = caption ? caption.textContent : "";
+    lightbox.hidden = false;
+    lastFocused = btn;
+    lightboxClose.focus();
+    document.body.style.overflow = "hidden";
+  });
+});
+
 // ===========================================================================
 // INICIALIZACIÓN
 // Los nodos se construyen siempre (de escritorio y de mobile): en mobile
