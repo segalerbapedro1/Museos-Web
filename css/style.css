@@ -314,9 +314,52 @@ mark {
 }
 
 .link-azul { color: #0b93e8; }
-.link-turquesa { color: #00fbde; }
-.link-violeta { color: #fb6000; }
+.link-turquesa { color: #00fbde; } /* link a partes de web */
+.link-violeta { color: #bc0bed; } /* videos hover */
 .link-amarillo { color: #f8e302; }
+
+/* ==========================================================================
+   PREVIEW DE VIDEO EN HOVER
+   Envolvé el disparador (un <a>, o un <span class="video-hover__trigger">
+   si es solo texto sin link) en <span class="video-hover"> junto con un
+   <span class="video-hover__preview"><video>...</video></span> — al pasar
+   el mouse por encima aparece la preview flotando arriba, y al sacarlo se
+   oculta. El play/pause real del video lo maneja script.js (sección
+   "PREVIEW DE VIDEO EN HOVER"), así no queda reproduciéndose de fondo todo
+   el tiempo.
+   ========================================================================== */
+.video-hover {
+  position: relative;
+  display: inline-block;
+}
+/* Cuando el disparador es texto suelto (no un <a>), esto le da la misma
+   pista visual de "acá pasa algo" que ya tienen los links. */
+.video-hover__trigger {
+  cursor: help;
+  border-bottom: 1px dotted currentColor;
+}
+.video-hover__preview {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  width: 220px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+  z-index: 6; /* por encima del texto, por debajo del lightbox (10) */
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.video-hover__preview video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.video-hover:hover .video-hover__preview {
+  opacity: 1;
+}
 
 /* ==========================================================================
    LIGHTBOX

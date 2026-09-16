@@ -406,6 +406,25 @@ document.querySelectorAll(".essay-image-trigger").forEach((btn) => {
 });
 
 // ===========================================================================
+// PREVIEW DE VIDEO EN HOVER
+// El CSS (.video-hover:hover .video-hover__preview) ya se encarga de
+// mostrar/ocultar la preview; acá solo arrancamos y paramos el <video> para
+// que no quede reproduciéndose de fondo mientras no se ve.
+// ===========================================================================
+
+document.querySelectorAll(".video-hover").forEach((wrap) => {
+  const video = wrap.querySelector("video");
+  if (!video) return;
+  wrap.addEventListener("mouseenter", () => {
+    video.currentTime = 0;
+    video.play().catch(() => {}); // si el navegador bloquea el autoplay, no rompe nada
+  });
+  wrap.addEventListener("mouseleave", () => {
+    video.pause();
+  });
+});
+
+// ===========================================================================
 // INICIALIZACIÓN
 // Los nodos se construyen siempre (de escritorio y de mobile): en mobile
 // los necesita la sección "Recorrido" para poder mostrarlos ahí. Lo que
