@@ -332,18 +332,18 @@ mark {
   position: relative;
   display: inline-block;
 }
-/* Cuando el disparador es texto suelto (no un <a>), esto le da la misma
-   pista visual de "acá pasa algo" que ya tienen los links. */
+/* Cuando el disparador es texto suelto (no un <a>): el color lo pone la
+   clase que le sumes (ej. .link-violeta), acá solo el cursor como pista
+   de que hay algo interactivo, sin subrayado. */
 .video-hover__trigger {
   cursor: help;
-  border-bottom: 1px dotted currentColor;
 }
 .video-hover__preview {
   position: absolute;
   bottom: 100%;
   left: 50%;
   transform: translateX(-50%) translateY(-8px);
-  width: 220px;
+  width: 440px;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.15s ease;
