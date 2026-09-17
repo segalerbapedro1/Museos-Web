@@ -388,7 +388,8 @@ mark {
   line-height: 1.4;
   text-align: left;
 }
-.quote-hover__preview blockquote {
+.quote-hover__preview .quote-hover__quote {
+  display: block;
   margin: 0 0 0.4rem;
   font-style: italic;
 }
