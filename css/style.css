@@ -29,7 +29,7 @@
   --shadow-turquesa: 64, 224, 208;  /* Sala Pays */
   --shadow-lima: 130, 210, 30;      /* MALBA */
 
-  --sans: "Roboto", "Helvetica Neue", Arial, sans-serif;
+  --sans: "Inter", "Helvetica Neue", Arial, sans-serif;
   --display: "Alte Haas Grotesk", var(--sans);
   --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 }
