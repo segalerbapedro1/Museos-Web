@@ -315,10 +315,30 @@ mark {
 }
 
 .link-azul { color: #0b93e8; } /* webs museos */
-.link-turquesa { color: #00fbde; } /* link a partes de web */
-.link-violeta { color: #bc0bed; } /* videos hover */
-.link-amarillo { color: #f8e302; } /* links a otras webs */
-.link-verde { color:#26d316; }  /* citas de webs */
+.link-turquesa {
+  color: var(--ink);
+  background: #00fbde;
+  padding: 0.02em 0.3em;
+  border-radius: 2px;
+} /* link a partes de web */
+.link-violeta {
+  color: var(--ink);
+  background: #bc0bed;
+  padding: 0.02em 0.3em;
+  border-radius: 2px;
+} /* videos hover */
+.link-amarillo {
+  color: var(--ink);
+  background: #f8e302;
+  padding: 0.02em 0.3em;
+  border-radius: 2px;
+} /* links a otras webs */
+.link-verde {
+  color: var(--ink);
+  background: #26d316;
+  padding: 0.02em 0.3em;
+  border-radius: 2px;
+}  /* citas de webs */
 
 /* ==========================================================================
    PREVIEW DE VIDEO EN HOVER
