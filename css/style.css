@@ -314,10 +314,11 @@ mark {
   text-underline-offset: 3px;
 }
 
-.link-azul { color: #0b93e8; }
+.link-azul { color: #0b93e8; } /* webs museos */
 .link-turquesa { color: #00fbde; } /* link a partes de web */
 .link-violeta { color: #bc0bed; } /* videos hover */
-.link-amarillo { color: #f8e302; }
+.link-amarillo { color: #f8e302; } /* links a otras webs */
+.link-verde { color:#26d316; }  /* citas de webs */
 
 /* ==========================================================================
    PREVIEW DE VIDEO EN HOVER
