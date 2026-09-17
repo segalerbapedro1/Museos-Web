@@ -266,7 +266,7 @@ code {
 .essay-body p {
   font-family: var(--sans);
   font-size: 1.15rem;
-  line-height: 1.15;
+  line-height: 1.50;
   text-align: justify;
   hyphens: auto;
   margin: 0 0 1.4rem;
