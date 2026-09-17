@@ -361,7 +361,43 @@ mark {
 .video-hover:hover .video-hover__preview {
   opacity: 1;
 }
-
+.quote-hover {
+  position: relative;
+  display: inline-block;
+}
+.quote-hover__trigger {
+  cursor: help;
+}
+.quote-hover__preview {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  width: 240px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+  z-index: 6;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 0.75rem 0.9rem;
+  border-radius: 4px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
+  font-size: 0.8rem;
+  line-height: 1.4;
+  text-align: left;
+}
+.quote-hover__preview blockquote {
+  margin: 0 0 0.4rem;
+  font-style: italic;
+}
+.quote-hover__preview cite {
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+.quote-hover:hover .quote-hover__preview {
+  opacity: 1;
+}
 /* ==========================================================================
    LIGHTBOX
    ========================================================================== */
