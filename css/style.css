@@ -238,7 +238,7 @@ code {
 .essay {
   position: relative;
   z-index: 2;
-  max-width: 640px;
+  max-width: 720px;
   margin: 0 auto;
   padding: calc(14vh + 2.5rem) 2rem 20vh; /* el +2.5rem deja lugar al nav fijo */
   background: var(--paper-panel);
@@ -266,7 +266,7 @@ code {
 .essay-body p {
   font-family: var(--sans);
   font-size: 1.15rem;
-  line-height: 1.65;
+  line-height: 1.15;
   text-align: justify;
   hyphens: auto;
   margin: 0 0 1.4rem;
