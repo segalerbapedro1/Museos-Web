@@ -865,7 +865,7 @@ function exportarRecorridoPropio() {
 
   // Fondo oscuro del sitio, para que no quede transparente/blanco (el JPG
   // no soporta transparencia de todos modos).
-  ctx.fillStyle = "#141210";
+  ctx.fillStyle = "#000000";
   ctx.fillRect(0, 0, anchoTotal, altoTotal);
 
   const aLienzo = (r) => ({

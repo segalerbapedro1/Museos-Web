@@ -20,8 +20,8 @@
 
 :root {
   --ink: #f2f0ec;
-  --paper: #141210;
-  --paper-panel: rgba(20, 18, 16, 0.93);
+  --paper: #000000;
+  --paper-panel: rgba(0, 0, 0, 0.93);
   --line: rgba(242, 240, 236, 0.14);
   --accent: #0b93e8;
   --mark-date: #26d316;
@@ -121,7 +121,7 @@ code {
   justify-content: center;
   gap: 1.75rem;
   padding: 0.85rem 1rem;
-  background: rgba(20, 18, 16, 0.82);
+  background: rgba(0, 0, 0, 0.82);
   backdrop-filter: blur(6px);
   border-bottom: 1px solid var(--line);
   font-family: var(--sans);
@@ -162,7 +162,7 @@ code {
   flex-direction: column;
   gap: 0;
   padding: 0;
-  background: rgba(20, 18, 16, 0.82);
+  background: rgba(0, 0, 0, 0.82);
   backdrop-filter: blur(6px);
   border-top: 1px solid var(--line);
   font-family: var(--sans);
@@ -347,7 +347,7 @@ body.modo-recorrido-propio .leyenda-conexiones__item--criterio {
   align-items: stretch;
   gap: 0.35rem;
   padding: 0.55rem;
-  background: rgba(20, 18, 16, 0.82);
+  background: rgba(0, 0, 0, 0.82);
   backdrop-filter: blur(6px);
   border: 1px solid var(--line);
   border-radius: 4px;
