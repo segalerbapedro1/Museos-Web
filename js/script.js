@@ -188,18 +188,28 @@ function layoutNodes(count) {
   // epígrafe), así ninguna termina escondida detrás de esas dos franjas.
   const navH = document.querySelector(".site-nav")?.offsetHeight || 48;
   const legendH = leyendaEl?.offsetHeight || 56;
-  const colchon = 20;
+  // El panel del filtro por museo (arriba a la derecha) solo tapa esa
+  // esquina, pero como acá el margen se calcula parejo para todo el ancho
+  // (más simple que tratar esquinas distintas), se sigue el mismo criterio
+  // conservador que con el nav y la leyenda: se descuenta su alto también.
+  const filtroMuseosH = document.getElementById("filtro-museos")?.offsetHeight || 44;
+  // Antes era 20 — con menos aire de colchón las obras llegan más cerca de
+  // los bordes y de las barras fijas, sin dejar de estar protegidas.
+  const colchon = 10;
   const tamañoMax = baseSize * 1.25; // el jitter de `size` de abajo llega hasta acá
   const altoMaxObra = tamañoMax * 1.35; // imagen + epígrafe, con margen de sobra
 
-  const margenSupPct = ((navH + colchon) / vh) * 100;
+  const margenSupPct = ((navH + filtroMuseosH + colchon) / vh) * 100;
   const margenInfPct = ((legendH + colchon + altoMaxObra) / vh) * 100;
   const margenLatPct = (tamañoMax / vw) * 100;
 
-  const topMin = Math.max(4, margenSupPct);
+  // Los pisos/techos de acá abajo (2, 1, 97) son el mínimo de aire fijo que
+  // se deja aunque el cálculo de arriba diera un margen todavía más chico —
+  // antes eran 4, 2 y 92, mucho más conservadores de lo que hacía falta.
+  const topMin = Math.max(2, margenSupPct);
   const topMax = Math.max(topMin + 10, 100 - margenInfPct);
-  const leftMin = 2;
-  const leftMax = Math.min(92, 100 - margenLatPct);
+  const leftMin = 1;
+  const leftMax = Math.min(97, 100 - margenLatPct);
 
   const cellW = (leftMax - leftMin) / cols;
   const cellH = (topMax - topMin) / rows;
@@ -228,6 +238,22 @@ function layoutNodes(count) {
 // CONSTRUCCIÓN DE NODOS
 // ===========================================================================
 
+// Fisher-Yates con Math.random() — a propósito NO usa el PRNG con semilla
+// fija de layoutNodes (ese sigue siendo siempre igual, para que la "forma"
+// de la grilla no cambie), sino uno realmente aleatorio: mezcla el ORDEN en
+// que las obras entran a esa grilla, así cada carga de la página termina
+// con una distribución distinta y las tres salas quedan mezcladas en vez de
+// aparecer en bloques (antes, como se arma primero todo Sala Pays, después
+// todo Malba y después toda Amalita, cada una ocupaba siempre la misma
+// franja de la pantalla).
+function mezclarAleatorio(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
 function buildAllNodes() {
   const flat = [];
   Object.entries(NODE_GROUPS).forEach(([groupKey, group]) => {
@@ -252,6 +278,8 @@ function buildAllNodes() {
     });
   });
 
+  mezclarAleatorio(flat);
+
   const positions = layoutNodes(flat.length);
   const groupIndices = {};
   const builtNodes = [];
@@ -262,6 +290,9 @@ function buildAllNodes() {
     const figure = document.createElement("figure");
     figure.className = `node-img ${data.shadowClass}`;
     figure.id = data.id;
+    // De qué museo es esta obra — lo usa el filtro por museo (ver sección
+    // FILTRO POR MUSEO más abajo) para saber a quién atenuar.
+    figure.dataset.grupo = data.groupKey;
     figure.style.setProperty("--top", pos.top + "%");
     figure.style.setProperty("--left", pos.left + "%");
     figure.style.setProperty("--size", pos.size + "px");
@@ -731,6 +762,54 @@ if (botonReiniciarRecorrido) {
 }
 
 // ===========================================================================
+// FILTRO POR MUSEO
+// Panel aparte (arriba a la derecha), separado a propósito de la barra de
+// conexiones de abajo para no mezclar los dos tipos de filtro. Es de
+// selección única: "Todos" limpia el filtro, y cada museo se puede volver a
+// clickear para desactivarlo y volver a "Todos". Las obras que no son del
+// museo elegido se atenúan y dejan de responder al mouse (no desaparecen
+// del layout, solo quedan fuera de foco) y sus líneas de conexión —
+// incluidas las "extra" que se prendan por algún criterio de la leyenda de
+// abajo — se ocultan igual que ellas, para que no queden cables sueltos
+// apuntando a una obra apagada.
+// ===========================================================================
+
+const filtroMuseosEl = document.getElementById("filtro-museos");
+let museoFiltroActivo = null; // null = "todos" (sin filtro) | "salapays" | "malba" | "amalita"
+
+function aplicarFiltroMuseo() {
+  nodes.forEach((node) => {
+    const fuera = museoFiltroActivo !== null && node.dataset.grupo !== museoFiltroActivo;
+    node.classList.toggle("fuera-de-filtro", fuera);
+  });
+  lineEls.forEach((line, i) => {
+    const { a, b } = connectionPairs[i];
+    const fuera = museoFiltroActivo !== null &&
+      (nodes[a].dataset.grupo !== museoFiltroActivo || nodes[b].dataset.grupo !== museoFiltroActivo);
+    line.classList.toggle("fuera-de-filtro", fuera);
+  });
+}
+
+function setFiltroMuseo(grupo) {
+  museoFiltroActivo = grupo;
+  if (filtroMuseosEl) {
+    filtroMuseosEl.querySelectorAll(".filtro-museos__item").forEach((b) => {
+      b.setAttribute("aria-pressed", String((b.dataset.grupo || null) === grupo));
+    });
+  }
+  aplicarFiltroMuseo();
+}
+
+if (filtroMuseosEl) {
+  filtroMuseosEl.querySelectorAll(".filtro-museos__item").forEach((boton) => {
+    boton.addEventListener("click", () => {
+      const grupo = boton.dataset.grupo || null; // "" (botón "Todos") -> null
+      setFiltroMuseo(grupo === null ? null : (museoFiltroActivo === grupo ? null : grupo));
+    });
+  });
+}
+
+// ===========================================================================
 // ARRASTRAR + ABRIR (click)
 // Pointer Events (funciona con mouse y con touch). El modo arrastre se
 // habilita cuando el puntero se mantiene apretado más de HOLD_DELAY, y solo
@@ -923,13 +1002,14 @@ requestAnimationFrame(loop);
 window.addEventListener("resize", updateLines);
 
 // ===========================================================================
-// SECCIÓN "RECORRIDO" EN MOBILE
+// SECCIÓN "RECORRIDO"
 // La capa de nodos es una sola y es fixed (cubre toda la pantalla siempre,
-// esté donde esté en el HTML). En desktop se deja ver todo el tiempo. En
-// mobile, en cambio, arrancaría tapando el texto del "Ensayo" — por eso ahí
-// queda oculta por CSS y solo se muestra mientras la sección "Recorrido"
-// está en pantalla, agregando/sacando la clase .mostrar-recorrido en
-// <body> según entra o sale del viewport.
+// esté donde esté en el HTML). La clase .mostrar-recorrido se agrega/saca
+// en <body> según "Recorrido" entra o sale del viewport, y de ella cuelgan
+// dos cosas: en mobile, que la capa de nodos se muestre (ver style.css —
+// en mobile los nodos no van de fondo del ensayo, taparían el texto en una
+// pantalla chica); en cualquier tamaño de pantalla, que se vea la barra de
+// leyenda de abajo — no tiene sentido mientras se está leyendo "Ensayo".
 // ===========================================================================
 
 const recorridoSection = document.getElementById("recorrido");
@@ -938,6 +1018,12 @@ if (recorridoSection && "IntersectionObserver" in window) {
     (entries) => {
       entries.forEach((entry) => {
         document.body.classList.toggle("mostrar-recorrido", entry.isIntersecting);
+        // Si alguien deja armado un "recorrido propio" y se va de la
+        // sección, el botón para apagarlo desaparece con la barra — para
+        // no dejarlo trabado ahí, se apaga solo al salir.
+        if (!entry.isIntersecting && modoRecorridoPropio) {
+          alternarModoRecorridoPropio();
+        }
       });
     },
     { threshold: 0.15 }

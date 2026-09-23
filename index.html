@@ -43,6 +43,18 @@
   </div>
 
   <!-- ===================================================================
+       FILTRO POR MUSEO — panel fijo arriba a la derecha, separado a
+       propósito de la barra de conexiones de abajo. Selección única:
+       "Todos" o un solo museo a la vez (script.js maneja el toggle).
+  =================================================================== -->
+  <nav id="filtro-museos" class="filtro-museos" aria-label="Filtrar obras por museo">
+    <button type="button" class="filtro-museos__item" data-grupo="" aria-pressed="true">Todos</button>
+    <button type="button" class="filtro-museos__item filtro-museos__item--salapays" data-grupo="salapays" aria-pressed="false">Sala Pays</button>
+    <button type="button" class="filtro-museos__item filtro-museos__item--malba" data-grupo="malba" aria-pressed="false">Malba</button>
+    <button type="button" class="filtro-museos__item filtro-museos__item--amalita" data-grupo="amalita" aria-pressed="false">Colección Amalita</button>
+  </nav>
+
+  <!-- ===================================================================
        LEYENDA DE CONEXIONES — barra fija abajo. Arranca con dos controles
        fijos escritos acá a mano (armar/reiniciar el "recorrido propio",
        ver script.js sección RECORRIDO PROPIO) y a partir de ahí sigue un

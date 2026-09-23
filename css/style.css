@@ -27,7 +27,7 @@
   --mark-date: #26d316;
   --mark-note: #ce25b5;
   --shadow-turquesa: 64, 224, 208;  /* Sala Pays */
-  --shadow-lima: 130, 210, 30;      /* MALBA */
+  --shadow-lima: 255, 255, 51;      /* MALBA — mismo amarillo que usa el museo en su propio menú */
   --shadow-amalita: 31, 111, 92;    /* Colección Amalita */
 
   /* Versiones atenuadas de --ink, para texto secundario (epígrafes, byline)
@@ -238,6 +238,77 @@ body.modo-recorrido-propio .leyenda-conexiones__item--criterio {
 }
 
 /* ==========================================================================
+   FILTRO POR MUSEO — panel fijo arriba a la derecha, separado a propósito
+   de la barra de conexiones de abajo (son dos filtros distintos: uno separa
+   por museo, el otro conecta por técnica/década/motivo/emoción). Mismo
+   criterio de visibilidad que la leyenda: solo tiene sentido en "Recorrido".
+   ========================================================================== */
+.filtro-museos {
+  position: fixed;
+  top: 4rem;
+  right: 1rem;
+  z-index: 5; /* mismo nivel que .site-nav / .leyenda-conexiones */
+  display: none;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.35rem;
+  padding: 0.55rem;
+  background: rgba(20, 18, 16, 0.82);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font-family: var(--sans);
+  font-size: 0.66rem;
+  letter-spacing: 0.02em;
+}
+body.mostrar-recorrido .filtro-museos {
+  display: flex;
+}
+
+.filtro-museos__item {
+  flex: 0 0 auto;
+  padding: 0.35em 0.7em;
+  border-radius: 2px;
+  border: 1px solid var(--ink);
+  background: none;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+  white-space: nowrap;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.filtro-museos__item:hover,
+.filtro-museos__item:focus-visible {
+  background: var(--ink-tenue-bg);
+}
+.filtro-museos__item[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* Al pasar el mouse por cada museo, el botón se tiñe con el mismo color de
+   sombreado que ya distingue a sus obras en el "Recorrido" (ver
+   .node-img.shadow-* más abajo) — así el filtro se reconoce de un vistazo,
+   sin tener que leer el texto. Van después de las reglas de arriba a
+   propósito: misma especificidad que el hover genérico, así que el orden en
+   el archivo es lo que decide cuál gana. */
+.filtro-museos__item--salapays:hover,
+.filtro-museos__item--salapays:focus-visible {
+  border-color: rgb(var(--shadow-turquesa));
+  background: rgba(var(--shadow-turquesa), 0.28);
+}
+.filtro-museos__item--malba:hover,
+.filtro-museos__item--malba:focus-visible {
+  border-color: rgb(var(--shadow-lima));
+  background: rgba(var(--shadow-lima), 0.28);
+}
+.filtro-museos__item--amalita:hover,
+.filtro-museos__item--amalita:focus-visible {
+  border-color: rgb(var(--shadow-amalita));
+  background: rgba(var(--shadow-amalita), 0.28);
+}
+
+/* ==========================================================================
    SECCIONES — "Ensayo" y "Recorrido" son dos pantallas distintas del mismo
    scroll, cada una ancla de su propio link en el nav.
    ========================================================================== */
@@ -358,6 +429,16 @@ body.modo-recorrido-propio .connections line:not(.linea-recorrido-propio) {
   opacity: 0.9;
 }
 
+/* FILTRO POR MUSEO (ver script.js, sección FILTRO POR MUSEO): con un museo
+   elegido, cualquier línea con al menos una punta fuera de ese museo se
+   apaga — el !important es el mismo criterio que en recorrido propio: tiene
+   que ganarle a .destacada (e incluso a una línea "extra" recién prendida
+   por un criterio de la leyenda), si no quedarían cables grises o de color
+   apuntando a una obra ya atenuada. */
+.connections line.fuera-de-filtro {
+  opacity: 0 !important;
+}
+
 .node-img {
   position: fixed;
   top: var(--top);
@@ -401,8 +482,9 @@ body.modo-recorrido-propio .connections line:not(.linea-recorrido-propio) {
   z-index: 5;
 }
 
-/* Sombra por grupo: turquesa para las obras de Sala Pays, verde lima para
-   las de MALBA, verde agua oscuro para las de Colección Amalita. Van sobre
+/* Sombra por grupo: turquesa para las obras de Sala Pays, amarillo para
+   las de MALBA (el mismo que usa el museo en su propio menú — ver
+   --shadow-lima), verde agua oscuro para las de Colección Amalita. Van sobre
    .node-trigger (más específico que la sombra neutra de arriba, así la
    pisan sin !important). Mismo criterio "duro" que arriba: offset sólido,
    sin blur. */
@@ -469,6 +551,23 @@ body.modo-recorrido-propio .connections line:not(.linea-recorrido-propio) {
   font-weight: 700;
   pointer-events: none;
   z-index: 2;
+}
+
+/* FILTRO POR MUSEO (ver script.js): obra que no es del museo elegido queda
+   bien atenuada y deja de responder al mouse — no se puede ni arrastrar ni
+   abrir en el lightbox mientras el filtro siga activo. !important por el
+   mismo motivo que en las líneas de arriba: tiene que ganarle incluso al
+   atenuado normal de .resaltando. El pointer-events: none de acá NO alcanza
+   solo: .node-trigger (el botón de adentro) pone el suyo en auto para
+   reactivarse sobre .nodes-layer, que por defecto es none — así que hay que
+   apagarlo puntualmente ahí también, si no el navegador lo sigue usando
+   como blanco de click aunque la figura entera diga que no. */
+.node-img.fuera-de-filtro {
+  opacity: 0.12 !important;
+  pointer-events: none !important;
+}
+.node-img.fuera-de-filtro .node-trigger {
+  pointer-events: none !important;
 }
 
 .node-img img {
@@ -762,6 +861,10 @@ mark {
   /* El display:none/flex según .mostrar-recorrido ya es global (ver
      arriba) — acá solo quedan los ajustes de tamaño propios de mobile. */
   .leyenda-conexiones { font-size: 0.62rem; padding: 0.5rem 0.75rem; }
+
+  /* Mismo criterio para el filtro por museo: un poco más chico y más cerca
+     del borde para no comerse tanto ancho en una pantalla angosta. */
+  .filtro-museos { top: 3.6rem; right: 0.6rem; font-size: 0.6rem; padding: 0.45rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
