@@ -641,6 +641,23 @@ body.modo-recorrido-propio .connections line:not(.linea-recorrido-propio) {
   margin: 0 0 1.4rem;
 }
 
+/* Lista de bibliografía (sección "Bibliografía") — más chica que el cuerpo
+   normal, sin justificar (una cita con guiones/URL se ve rara justificada)
+   y con sangría francesa simple para que cada referencia se lea como un
+   bloque propio. */
+.essay-body ul.bibliografia {
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--ink-tenue);
+  margin: 0 0 1.4rem;
+  padding-left: 1.4rem;
+}
+.essay-body ul.bibliografia li {
+  margin-bottom: 0.85rem;
+  padding-left: 0.2rem;
+}
+
 .essay-figure {
   margin: 2rem auto;
   text-align: center;
@@ -685,7 +702,7 @@ mark {
 
 .link-azul { color: #0b93e8; } /* webs museos */
 .link-turquesa {
-  color: var(--ink);
+  color: var(--paper);
   background: #00fbde;
   padding: 0.02em 0.3em;
   border-radius: 2px;
@@ -697,7 +714,7 @@ mark {
   border-radius: 2px;
 } /* videos hover */
 .link-amarillo {
-  color: var(--ink);
+  color: var(--paper);
   background: #f8e302;
   padding: 0.02em 0.3em;
   border-radius: 2px;
@@ -708,6 +725,12 @@ mark {
   padding: 0.02em 0.3em;
   border-radius: 2px;
 }  /* citas de webs */
+.link-rosa {
+  color: var(--paper);
+  background: #f0a8c4;
+  padding: 0.02em 0.3em;
+  border-radius: 2px;
+} /* obras con preview de imagen al hacer hover */
 
 /* ==========================================================================
    PREVIEW DE VIDEO EN HOVER
@@ -751,6 +774,48 @@ mark {
 .video-hover:hover .video-hover__preview {
   opacity: 1;
 }
+/* ==========================================================================
+   PREVIEW DE IMAGEN EN HOVER
+   Mismo mecanismo que el de video de arriba, pero para una foto suelta en
+   vez de un <video> — no hace falta nada de JS acá (una imagen no tiene
+   play/pause que manejar). Envolvé el disparador (acá sí puede ser
+   directamente el <a> del link real, ya que solo alterna opacity por CSS)
+   en <span class="image-hover"> junto con un
+   <span class="image-hover__preview"><img>...</span>. */
+.image-hover {
+  position: relative;
+  /* inline, no inline-block: con inline-block el navegador trata todo el
+     texto del link como un solo bloque indivisible, y si no entra en lo
+     que queda del renglón lo empuja entero a la línea siguiente — eso deja
+     la línea anterior con pocas palabras, que el justificado estira con
+     espacios enormes. Con inline puede cortar el texto del link como
+     cualquier otra palabra, y el preview absoluto sigue funcionando igual
+     (position: relative alcanza como referencia, no hace falta block). */
+  display: inline;
+}
+.image-hover__preview {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  width: 320px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+  z-index: 6; /* por encima del texto, por debajo del lightbox (10) */
+  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.image-hover__preview img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.image-hover:hover .image-hover__preview {
+  opacity: 1;
+}
+
 .quote-hover {
   position: relative;
   display: inline-block;
