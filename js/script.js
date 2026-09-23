@@ -153,14 +153,38 @@ function mulberry32(seed) {
 }
 
 function layoutNodes(count) {
-  const aspect = (window.innerWidth || 1600) / (window.innerHeight || 900);
+  const vw = window.innerWidth || 1600;
+  const vh = window.innerHeight || 900;
+  const aspect = vw / vh;
   const cols = Math.max(1, Math.round(Math.sqrt(count * aspect)));
   const rows = Math.max(1, Math.ceil(count / cols));
   // Nodos chicos a propósito: así se ven los cables (líneas de conexión)
   // entre las obras en vez de que las imágenes se tapen entre sí.
   const baseSize = Math.max(46, Math.min(120, 1000 / Math.sqrt(count)));
-  const cellW = 100 / cols;
-  const cellH = 100 / rows;
+
+  // El nav de arriba y la barra de leyenda de abajo son fixed y tapan
+  // cualquier obra que quede detrás — se miden en vivo (la de abajo cambia
+  // de alto según cuántos botones de criterio tiene, que a su vez depende
+  // de cuántas obras hay) y se descuenta ese espacio, más un colchón de
+  // aire y el alto máximo que puede llegar a tener una obra (imagen +
+  // epígrafe), así ninguna termina escondida detrás de esas dos franjas.
+  const navH = document.querySelector(".site-nav")?.offsetHeight || 48;
+  const legendH = leyendaEl?.offsetHeight || 56;
+  const colchon = 20;
+  const tamañoMax = baseSize * 1.25; // el jitter de `size` de abajo llega hasta acá
+  const altoMaxObra = tamañoMax * 1.35; // imagen + epígrafe, con margen de sobra
+
+  const margenSupPct = ((navH + colchon) / vh) * 100;
+  const margenInfPct = ((legendH + colchon + altoMaxObra) / vh) * 100;
+  const margenLatPct = (tamañoMax / vw) * 100;
+
+  const topMin = Math.max(4, margenSupPct);
+  const topMax = Math.max(topMin + 10, 100 - margenInfPct);
+  const leftMin = 2;
+  const leftMax = Math.min(92, 100 - margenLatPct);
+
+  const cellW = (leftMax - leftMin) / cols;
+  const cellH = (topMax - topMin) / rows;
 
   const positions = [];
   for (let i = 0; i < count; i++) {
@@ -171,8 +195,8 @@ function layoutNodes(count) {
     const jitterY = (rand() - 0.5) * cellH * 0.7;
 
     positions.push({
-      top: Math.min(92, Math.max(2, row * cellH + cellH / 2 + jitterY)),
-      left: Math.min(92, Math.max(2, col * cellW + cellW / 2 + jitterX)),
+      top: Math.min(topMax, Math.max(topMin, topMin + row * cellH + cellH / 2 + jitterY)),
+      left: Math.min(leftMax, Math.max(leftMin, leftMin + col * cellW + cellW / 2 + jitterX)),
       size: Math.round(baseSize * (0.75 + rand() * 0.5)),
       delay: +(rand() * 3).toFixed(2),
       duration: +(6 + rand() * 4).toFixed(2),
@@ -237,6 +261,15 @@ function buildAllNodes() {
     img.src = data.src;
     img.alt = data.alt;
     img.loading = "lazy";
+    // Clave para que el arrastre con click IZQUIERDO funcione: una <img>
+    // es "arrastrable" para el navegador por defecto (el drag nativo de
+    // imágenes), y ese drag nativo se activa justo con el botón izquierdo
+    // — le gana de mano al arrastre propio de acá abajo (pointerdown/move)
+    // antes de que llegue a engancharse. Con el botón del medio nunca pasa
+    // (el drag nativo del navegador solo escucha al izquierdo), por eso
+    // ahí sí andaba. Con esto deshabilitado, el arrastre propio queda
+    // libre para responder al izquierdo también.
+    img.draggable = false;
 
     button.appendChild(img);
     figure.appendChild(button);

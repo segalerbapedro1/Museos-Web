@@ -472,6 +472,12 @@ body.modo-recorrido-propio .connections line:not(.linea-recorrido-propio) {
   width: 100%;
   height: auto;
   opacity: 0.9;
+  /* Refuerzo del img.draggable = false de script.js — en algunos
+     navegadores (Safari sobre todo) hace falta esta propiedad además del
+     atributo para que el drag nativo de la imagen no le gane de mano al
+     arrastre propio con el botón izquierdo. */
+  -webkit-user-drag: none;
+  user-drag: none;
 }
 
 .node-img figcaption {
