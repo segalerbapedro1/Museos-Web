@@ -151,7 +151,11 @@ code {
   left: 0;
   right: 0;
   z-index: 5; /* por encima de los nodos y las secciones, por debajo del lightbox */
-  display: flex;
+  /* Solo tiene sentido mientras las obras están a la vista, así que sigue
+     la misma clase en <body> que ya prende/apaga el IntersectionObserver
+     de "Recorrido" al final de script.js (antes esto solo pasaba en
+     mobile; ahora es igual en cualquier tamaño de pantalla). */
+  display: none;
   gap: 0.5rem;
   align-items: center;
   padding: 0.65rem 1rem;
@@ -163,8 +167,8 @@ code {
   font-size: 0.68rem;
   letter-spacing: 0.02em;
 }
-.leyenda-conexiones:empty {
-  display: none; /* nada que mostrar todavía si ninguna obra comparte un criterio */
+body.mostrar-recorrido .leyenda-conexiones {
+  display: flex;
 }
 
 .leyenda-conexiones__item {
@@ -755,10 +759,9 @@ mark {
 
   .site-nav { gap: 1.1rem; font-size: 0.68rem; }
 
-  /* Misma lógica que .nodes-layer: la leyenda solo tiene sentido cuando las
-     obras están a la vista, así que sigue la misma clase en <body>. */
-  .leyenda-conexiones { display: none; font-size: 0.62rem; padding: 0.5rem 0.75rem; }
-  body.mostrar-recorrido .leyenda-conexiones { display: flex; }
+  /* El display:none/flex según .mostrar-recorrido ya es global (ver
+     arriba) — acá solo quedan los ajustes de tamaño propios de mobile. */
+  .leyenda-conexiones { font-size: 0.62rem; padding: 0.5rem 0.75rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -905,13 +905,14 @@ requestAnimationFrame(loop);
 window.addEventListener("resize", updateLines);
 
 // ===========================================================================
-// SECCIÓN "RECORRIDO" EN MOBILE
+// SECCIÓN "RECORRIDO"
 // La capa de nodos es una sola y es fixed (cubre toda la pantalla siempre,
-// esté donde esté en el HTML). En desktop se deja ver todo el tiempo. En
-// mobile, en cambio, arrancaría tapando el texto del "Ensayo" — por eso ahí
-// queda oculta por CSS y solo se muestra mientras la sección "Recorrido"
-// está en pantalla, agregando/sacando la clase .mostrar-recorrido en
-// <body> según entra o sale del viewport.
+// esté donde esté en el HTML). La clase .mostrar-recorrido se agrega/saca
+// en <body> según "Recorrido" entra o sale del viewport, y de ella cuelgan
+// dos cosas: en mobile, que la capa de nodos se muestre (ver style.css —
+// en mobile los nodos no van de fondo del ensayo, taparían el texto en una
+// pantalla chica); en cualquier tamaño de pantalla, que se vea la barra de
+// leyenda de abajo — no tiene sentido mientras se está leyendo "Ensayo".
 // ===========================================================================
 
 const recorridoSection = document.getElementById("recorrido");
@@ -920,6 +921,12 @@ if (recorridoSection && "IntersectionObserver" in window) {
     (entries) => {
       entries.forEach((entry) => {
         document.body.classList.toggle("mostrar-recorrido", entry.isIntersecting);
+        // Si alguien deja armado un "recorrido propio" y se va de la
+        // sección, el botón para apagarlo desaparece con la barra — para
+        // no dejarlo trabado ahí, se apaga solo al salir.
+        if (!entry.isIntersecting && modoRecorridoPropio) {
+          alternarModoRecorridoPropio();
+        }
       });
     },
     { threshold: 0.15 }
