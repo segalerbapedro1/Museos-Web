@@ -423,6 +423,8 @@ function updateLines() {
     line.setAttribute("x2", p2.x);
     line.setAttribute("y2", p2.y);
   });
+
+  updateRecorridoPropioLines(); // ver sección RECORRIDO PROPIO más abajo
 }
 
 function loop() {
@@ -455,6 +457,12 @@ const criteriosSeleccionados = new Set();
 const TIPOS_CONEXION = ["tecnica", "decada", "motivo", "emocion"];
 
 function actualizarResaltado() {
+  // En modo "recorrido propio" toda esta red queda oculta por CSS de
+  // cualquier manera (ver body.modo-recorrido-propio en style.css) — así
+  // que ni vale la pena tocar clases acá: el hover normal no debe atenuar
+  // ni resaltar nada mientras se arma el recorrido a mano.
+  if (modoRecorridoPropio) return;
+
   const hayAlgoResaltado = hoverIndex !== null || criteriosSeleccionados.size > 0;
   const nodosRelevantes = new Set();
   if (hoverIndex !== null) nodosRelevantes.add(hoverIndex);
@@ -544,7 +552,7 @@ function renderLeyenda(criterios) {
     const clave = `${tipo}|${valor}`;
     const boton = document.createElement("button");
     boton.type = "button";
-    boton.className = `leyenda-conexiones__item leyenda-conexiones__item--${tipo}`;
+    boton.className = `leyenda-conexiones__item leyenda-conexiones__item--criterio leyenda-conexiones__item--${tipo}`;
     // Solo el valor (ej. "pintura", no "técnica: pintura") — el color del
     // outline ya indica de qué tipo de criterio se trata.
     boton.textContent = valor;
@@ -567,6 +575,111 @@ function renderLeyenda(criterios) {
 }
 
 // ===========================================================================
+// RECORRIDO PROPIO
+// Modo aparte, más simple que el resto: no compara datos curatoriales ni
+// nada — cada quien arma su propio orden a mano. Al activarlo, toda la red
+// de conexiones normal (de fondo, resaltada u oculta) se apaga por CSS
+// (ver body.modo-recorrido-propio en style.css) y las obras quedan
+// flotando sueltas. Cada click sobre una obra la suma al final del
+// recorrido y la une con una línea roja a la anterior; clickear una obra
+// que ya está en el recorrido la saca (y el camino se re-arma solo,
+// uniendo directo a sus dos vecinas). No se guarda en ningún lado a
+// propósito — es solo para explorar mientras se mira la pantalla, no hace
+// falta que sobreviva a un refresh.
+// ===========================================================================
+
+const botonRecorridoPropio = document.getElementById("boton-recorrido-propio");
+const botonReiniciarRecorrido = document.getElementById("boton-reiniciar-recorrido");
+const hintRecorridoPropio = document.getElementById("recorrido-propio-hint");
+
+let modoRecorridoPropio = false;
+let recorridoPropio = [];    // índices (dentro de `nodes`) en el orden en que se clickearon
+let recorridoLineEls = [];   // una <line> roja por cada par consecutivo del recorrido
+
+function renderRecorridoPropio() {
+  // Marca qué obras están elegidas y con qué número del recorrido.
+  nodes.forEach((node, i) => {
+    const orden = recorridoPropio.indexOf(i);
+    node.classList.toggle("en-recorrido-propio", orden !== -1);
+    if (orden !== -1) node.dataset.ordenRecorrido = orden + 1;
+    else delete node.dataset.ordenRecorrido;
+  });
+
+  // Se reconstruyen las líneas rojas desde cero: una por cada par de obras
+  // consecutivas en el recorrido. Es más simple que tratar de reutilizar
+  // las que ya había, y acá nunca son tantas como para que importe.
+  recorridoLineEls.forEach((line) => line.remove());
+  recorridoLineEls = recorridoPropio.slice(1).map(() => {
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.classList.add("linea-recorrido-propio");
+    svg.appendChild(line);
+    return line;
+  });
+  updateRecorridoPropioLines();
+
+  if (botonReiniciarRecorrido) botonReiniciarRecorrido.hidden = recorridoPropio.length === 0;
+}
+
+function updateRecorridoPropioLines() {
+  for (let k = 0; k < recorridoLineEls.length; k++) {
+    const p1 = centerOf(nodes[recorridoPropio[k]]);
+    const p2 = centerOf(nodes[recorridoPropio[k + 1]]);
+    recorridoLineEls[k].setAttribute("x1", p1.x);
+    recorridoLineEls[k].setAttribute("y1", p1.y);
+    recorridoLineEls[k].setAttribute("x2", p2.x);
+    recorridoLineEls[k].setAttribute("y2", p2.y);
+  }
+}
+
+// Se llama desde el click de cada obra (ver attachNodeInteractions) cuando
+// el modo está activo, en vez de abrir el lightbox.
+function alternarEnRecorridoPropio(i) {
+  const pos = recorridoPropio.indexOf(i);
+  if (pos === -1) recorridoPropio.push(i);
+  else recorridoPropio.splice(pos, 1);
+  renderRecorridoPropio();
+}
+
+function alternarModoRecorridoPropio() {
+  modoRecorridoPropio = !modoRecorridoPropio;
+  document.body.classList.toggle("modo-recorrido-propio", modoRecorridoPropio);
+  if (botonRecorridoPropio) botonRecorridoPropio.setAttribute("aria-pressed", String(modoRecorridoPropio));
+  if (hintRecorridoPropio) hintRecorridoPropio.hidden = !modoRecorridoPropio;
+
+  // Se limpia cualquier resaltado/filtro de la red normal al cruzar en
+  // cualquiera de los dos sentidos, para que un modo nunca deje pisando
+  // algo del otro (un criterio elegido, una obra en hover, etc.).
+  hoverIndex = null;
+  criteriosSeleccionados.clear();
+  leyendaEl.querySelectorAll('.leyenda-conexiones__item--criterio[aria-pressed="true"]')
+    .forEach((b) => b.setAttribute("aria-pressed", "false"));
+  svg.classList.remove("resaltando");
+  nodesLayer.classList.remove("resaltando");
+  nodes.forEach((n) => n.classList.remove("obra-resaltada"));
+  lineEls.forEach((line) => {
+    line.classList.remove("destacada");
+    TIPOS_CONEXION.forEach((t) => line.classList.remove(`conexion-${t}`));
+  });
+
+  if (!modoRecorridoPropio) {
+    // Al salir del modo no queda nada armado — la próxima vez se empieza
+    // de cero, como pidió simplicidad por sobre persistencia.
+    recorridoPropio = [];
+    renderRecorridoPropio();
+  }
+}
+
+if (botonRecorridoPropio) {
+  botonRecorridoPropio.addEventListener("click", alternarModoRecorridoPropio);
+}
+if (botonReiniciarRecorrido) {
+  botonReiniciarRecorrido.addEventListener("click", () => {
+    recorridoPropio = [];
+    renderRecorridoPropio();
+  });
+}
+
+// ===========================================================================
 // ARRASTRAR + ABRIR (click)
 // Pointer Events (funciona con mouse y con touch). El modo arrastre se
 // habilita cuando el puntero se mantiene apretado más de HOLD_DELAY, y solo
@@ -585,7 +698,7 @@ const HOLD_DELAY = 220;     // ms apretando antes de habilitar el arrastre
 const MOVE_THRESHOLD = 4;   // px de movimiento real antes de considerarlo "arrastre"
 
 function attachNodeInteractions(nodeEls) {
-  nodeEls.forEach((node) => {
+  nodeEls.forEach((node, i) => {
     const trigger = node.querySelector(".node-trigger");
     let dragging = false;
     let didMove = false;
@@ -644,6 +757,12 @@ function attachNodeInteractions(nodeEls) {
 
     node.addEventListener("click", () => {
       if (didMove) return; // hubo arrastre real: no abrir
+      // En modo "recorrido propio" el click suma/saca la obra del
+      // recorrido en vez de abrir el lightbox (ver sección más arriba).
+      if (modoRecorridoPropio) {
+        alternarEnRecorridoPropio(i);
+        return;
+      }
       openLightbox(trigger);
     });
   });

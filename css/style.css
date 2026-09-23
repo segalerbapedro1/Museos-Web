@@ -50,6 +50,11 @@
   --conexion-motivo: 38, 211, 22;     /* verde — motivo en común */
   --conexion-emocion: 248, 227, 2;    /* amarillo — emoción en común */
 
+  /* Rojo reservado para el "recorrido propio" (ver script.js) — no se
+     mezcla con los colores de arriba a propósito, así se distingue de
+     entrada de las conexiones "automáticas" por criterio. */
+  --recorrido-propio: 227, 30, 30;
+
   --sans: "Inter", "Helvetica Neue", Arial, sans-serif;
   --display: "Alte Haas Grotesk", var(--sans);
   --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -192,6 +197,42 @@ code {
 .leyenda-conexiones__item--motivo  { --linea-criterio: rgb(var(--conexion-motivo)); }
 .leyenda-conexiones__item--emocion { --linea-criterio: rgb(var(--conexion-emocion)); }
 
+/* Separa los dos controles fijos ("armar mi recorrido" / "reiniciar",
+   escritos a mano en index.html) de los botones de criterio que arma solo
+   script.js a partir de acá. */
+.leyenda-conexiones__separador {
+  width: 1px;
+  align-self: stretch;
+  background: var(--line);
+  flex: 0 0 auto;
+  margin: 0 0.1rem;
+}
+
+.leyenda-conexiones__item--recorrido-propio {
+  --linea-criterio: rgb(var(--recorrido-propio));
+  font-weight: 700;
+}
+.leyenda-conexiones__item--reiniciar {
+  color: var(--ink-tenue);
+  border-style: dashed;
+}
+
+.recorrido-propio-hint {
+  flex: 0 0 auto;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--ink-tenue);
+  white-space: nowrap;
+}
+
+/* Mientras se arma el recorrido propio, los filtros por criterio de la red
+   normal no tienen ningún efecto visible (ver más abajo, se oculta toda la
+   red) — quedan atenuados para que se note que no responden. */
+body.modo-recorrido-propio .leyenda-conexiones__item--criterio {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
 /* ==========================================================================
    SECCIONES — "Ensayo" y "Recorrido" son dos pantallas distintas del mismo
    scroll, cada una ancla de su propio link en el nav.
@@ -293,6 +334,26 @@ code {
   stroke: rgb(var(--conexion-emocion));
 }
 
+/* RECORRIDO PROPIO (ver script.js): mientras está activo, TODA la red
+   normal desaparece de un saque — de fondo, resaltada o extra, no importa
+   en qué estado haya quedado — para que las obras se vean sueltas y solo
+   quede a la vista lo que cada quien va uniendo a mano. El !important es a
+   propósito: tiene que ganarle incluso a .destacada, que si no por
+   especificidad se impondría. La única línea que se deja pasar es la del
+   propio recorrido (.linea-recorrido-propio, ver más abajo). */
+body.modo-recorrido-propio .connections line:not(.linea-recorrido-propio) {
+  opacity: 0 !important;
+}
+
+/* La línea roja del recorrido propio. Va después de .resaltando arriba
+   para ganarle en el empate de especificidad y quedar siempre a la vista
+   mientras exista (no depende de hover ni de ningún criterio). */
+.connections line.linea-recorrido-propio {
+  stroke: rgb(var(--recorrido-propio));
+  stroke-width: 2;
+  opacity: 0.9;
+}
+
 .node-img {
   position: fixed;
   top: var(--top);
@@ -377,6 +438,33 @@ code {
 }
 .node-img.obra-resaltada .node-trigger {
   box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px var(--ink), 8px 8px 0 rgba(0, 0, 0, 0.55);
+}
+
+/* Obra ya elegida para el recorrido propio (ver script.js): mismo aro que
+   .obra-resaltada pero en rojo, para que se distinga de un vistazo, más un
+   numerito en la esquina con el lugar que ocupa en el recorrido. */
+.node-img.en-recorrido-propio .node-trigger {
+  box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px rgb(var(--recorrido-propio)), 8px 8px 0 rgba(0, 0, 0, 0.55);
+}
+.node-img.en-recorrido-propio::after {
+  content: attr(data-orden-recorrido);
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgb(var(--recorrido-propio));
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  pointer-events: none;
+  z-index: 2;
 }
 
 .node-img img {

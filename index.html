@@ -43,14 +43,21 @@
   </div>
 
   <!-- ===================================================================
-       LEYENDA DE CONEXIONES — barra fija abajo con un botón por cada
-       criterio de conexión que realmente existe entre las obras (ej.
-       "motivo: paisaje", "autor: Frida Kahlo"). Se arma sola en script.js
-       a partir de las conexiones ya calculadas, no hace falta tocarla a
-       mano acá. Al pasar el mouse por una obra o clickear uno de estos
-       botones se resaltan las conexiones/obras correspondientes.
+       LEYENDA DE CONEXIONES — barra fija abajo. Arranca con dos controles
+       fijos escritos acá a mano (armar/reiniciar el "recorrido propio",
+       ver script.js sección RECORRIDO PROPIO) y a partir de ahí sigue un
+       botón por cada criterio de conexión que realmente existe entre las
+       obras (ej. "pintura", "rostro") — esos los agrega solo script.js a
+       partir de las conexiones ya calculadas, no hace falta tocarlos acá.
+       Al pasar el mouse por una obra o clickear uno de estos botones se
+       resaltan las conexiones/obras correspondientes.
   =================================================================== -->
-  <nav id="leyenda-conexiones" class="leyenda-conexiones" aria-label="Criterios de conexión entre obras"></nav>
+  <nav id="leyenda-conexiones" class="leyenda-conexiones" aria-label="Criterios de conexión entre obras">
+    <button type="button" id="boton-recorrido-propio" class="leyenda-conexiones__item leyenda-conexiones__item--recorrido-propio" aria-pressed="false">Armar mi recorrido</button>
+    <button type="button" id="boton-reiniciar-recorrido" class="leyenda-conexiones__item leyenda-conexiones__item--reiniciar" hidden>Reiniciar recorrido</button>
+    <span id="recorrido-propio-hint" class="recorrido-propio-hint" hidden>Clickeá las obras en el orden que quieras — clickeá una ya elegida para sacarla.</span>
+    <span class="leyenda-conexiones__separador" aria-hidden="true"></span>
+  </nav>
 
   <!-- ===================================================================
        SECCIÓN "ENSAYO" — el texto, en su propia sección para poder
