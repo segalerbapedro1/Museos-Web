@@ -257,15 +257,21 @@ function buildAllNodes() {
 // ===========================================================================
 // CRITERIOS COMPARTIDOS
 // Compara dos obras y devuelve la lista de criterios en los que coinciden
-// (mismo autor, misma técnica, misma década, algún motivo en común, alguna
-// emoción en común). Todos los campos pueden venir null/vacíos (hay obras
-// sin autor o año todavía cargados) — por eso cada comparación se cubre con
-// su propio chequeo, así una obra incompleta nunca "matchea" en falso.
+// (misma técnica, misma década, algún motivo en común, alguna emoción en
+// común). El autor NO participa acá: es un dato relevante y se guarda en
+// cada obra (ver buildAllNodes), pero a pedido se dejó de usar como criterio
+// de conexión, así que nunca genera líneas ni aparece en la leyenda de
+// abajo. Todos los campos pueden venir null/vacíos (hay obras sin año
+// todavía cargado) — por eso cada comparación se cubre con su propio
+// chequeo, así una obra incompleta nunca "matchea" en falso.
 //
-// Cada criterio encontrado se guarda como { tipo, valor } — no solo QUÉ tipo
-// de dato coincide, sino el valor concreto que comparten (ej. "autor":
-// "Frida Kahlo", "motivo": "paisaje") — así después se puede mostrar en la
-// leyenda de abajo "a qué responde" cada conexión.
+// A diferencia de antes, acá se agregan TODOS los valores en común de cada
+// tipo (no solo el primero) — si dos obras comparten dos motivos a la vez,
+// entran los dos por separado. Cada uno se guarda como { tipo, valor } — no
+// solo QUÉ tipo de dato coincide, sino el valor concreto que comparten (ej.
+// "motivo": "rostro") — así después se puede mostrar en la leyenda de abajo
+// "a qué responde" cada conexión, y conectar entre sí a TODAS las obras que
+// comparten ese valor puntual (ver buildConnectionPairs).
 // ===========================================================================
 
 function decadaDe(anio) {
@@ -276,14 +282,9 @@ function decadaDe(anio) {
 function criteriosCompartidos(a, b) {
   const criterios = [];
 
-  if (a.autor && b.autor && a.autor === b.autor) {
-    criterios.push({ tipo: "autor", valor: a.autor });
-  }
-
-  const tecnicasComunes = (a.tecnica || []).filter((t) => (b.tecnica || []).includes(t));
-  if (tecnicasComunes.length > 0) {
-    criterios.push({ tipo: "tecnica", valor: tecnicasComunes[0] });
-  }
+  (a.tecnica || [])
+    .filter((t) => (b.tecnica || []).includes(t))
+    .forEach((t) => criterios.push({ tipo: "tecnica", valor: t }));
 
   const decadaA = decadaDe(a.anio);
   const decadaB = decadaDe(b.anio);
@@ -291,80 +292,114 @@ function criteriosCompartidos(a, b) {
     criterios.push({ tipo: "decada", valor: `años ${decadaA}` });
   }
 
-  const motivosComunes = (a.motivos || []).filter((m) => (b.motivos || []).includes(m));
-  if (motivosComunes.length > 0) {
-    criterios.push({ tipo: "motivo", valor: motivosComunes[0] });
-  }
+  (a.motivos || [])
+    .filter((m) => (b.motivos || []).includes(m))
+    .forEach((m) => criterios.push({ tipo: "motivo", valor: m }));
 
-  const emocionesComunes = (a.emociones || []).filter((e) => (b.emociones || []).includes(e));
-  if (emocionesComunes.length > 0) {
-    criterios.push({ tipo: "emocion", valor: emocionesComunes[0] });
-  }
+  (a.emociones || [])
+    .filter((e) => (b.emociones || []).includes(e))
+    .forEach((e) => criterios.push({ tipo: "emocion", valor: e }));
 
   return criterios;
 }
 
 // ===========================================================================
 // CONEXIONES ENTRE OBRAS
-// Antes cada obra se conectaba solo con las más cercanas EN PANTALLA y solo
-// dentro de su propio museo. Ahora se compara CADA obra con TODAS las demás
-// (sin importar el museo) y se prioriza conectarla con las que comparten más
-// criterios curatoriales (autor, técnica, década, motivo, emoción). La
-// distancia en pantalla pasa a ser solo un desempate — y también un respaldo
-// para las obras que todavía no comparten ningún criterio con nadie, así
-// ninguna queda flotando sin ninguna línea.
+// Hay dos capas de conexiones, no una sola:
 //
-// Cada conexión además guarda un `tipo`: el primer criterio compartido
-// (según el orden en que `criteriosCompartidos` los agrega, de más
-// específico — autor — a más general — emoción), que se usa después para
-// pintar la línea de un color distinto según qué la originó. Una conexión
-// que solo existe como respaldo por cercanía (sin ningún criterio en común)
-// queda con `tipo: null` y se dibuja neutra, como antes.
+// 1) La RED DE FONDO (la que se ve flotando todo el tiempo, sin tocar nada):
+//    cada obra se conecta solo con sus `NEIGHBORS_PER_NODE` vecinos más
+//    afines (más criterios en común primero, la cercanía en pantalla como
+//    desempate y como respaldo si no comparte nada con nadie). Es la misma
+//    lógica sparse de siempre — a propósito no se dibujan TODAS las
+//    conexiones posibles de una, para que de fondo se vea una red liviana y
+//    no un enjambre de líneas.
+//
+// 2) Los PARES EXTRA: todas las demás obras que comparten un criterio
+//    puntual (ej. las once obras con motivo "rostro") pero no entraron en la
+//    red de fondo por el límite de vecinos. Estos pares se dibujan igual
+//    (para que el layout ya los tenga listos) pero invisibles — ver
+//    `.linea-extra` en el CSS — y solo se revelan cuando se elige justo ESE
+//    criterio en la leyenda de abajo. Así, al tocar "rostro" se conectan
+//    TODAS las obras con rostro, no solo las que ya caían cerca.
+//
+// Cada par (de cualquiera de las dos capas) guarda la lista COMPLETA de
+// criterios que comparte esa pareja de obras (`criterios`, puede tener más
+// de uno), no solo el primero — así una conexión que responde a varios
+// criterios a la vez se resalta con cualquiera de ellos que se elija.
 // ===========================================================================
 
 function buildConnectionPairs(positions, flatData) {
-  const pairs = new Map(); // "i-j" -> { tipo, valor } | null
   const total = flatData.length;
+
+  // Se compara cada obra contra todas las demás una sola vez y se guarda
+  // acá todo lo que comparten, para no recalcularlo dos veces.
+  const compartidosPorPar = new Map(); // "i-j" (i<j) -> criterios[]
+  for (let i = 0; i < total; i++) {
+    for (let j = i + 1; j < total; j++) {
+      const criterios = criteriosCompartidos(flatData[i], flatData[j]);
+      if (criterios.length > 0) compartidosPorPar.set(`${i}-${j}`, criterios);
+    }
+  }
+
+  // --- 1) Red de fondo (sparse) ---
+  const basePairs = new Map(); // "i-j" -> { a, b, criterios }
 
   for (let i = 0; i < total; i++) {
     const candidatos = [];
     for (let j = 0; j < total; j++) {
       if (j === i) continue;
-      const criterios = criteriosCompartidos(flatData[i], flatData[j]);
+      const key = i < j ? `${i}-${j}` : `${j}-${i}`;
+      const criterios = compartidosPorPar.get(key) || [];
       const dx = positions[i].left - positions[j].left;
       const dy = positions[i].top - positions[j].top;
-      candidatos.push({ j, compartidos: criterios.length, criterio: criterios[0] || null, d: dx * dx + dy * dy });
+      candidatos.push({ j, criterios, d: dx * dx + dy * dy });
     }
 
     candidatos
-      .sort((a, b) => b.compartidos - a.compartidos || a.d - b.d)
+      .sort((x, y) => y.criterios.length - x.criterios.length || x.d - y.d)
       .slice(0, Math.min(NEIGHBORS_PER_NODE, candidatos.length))
-      .forEach(({ j, criterio }) => {
-        const key = i < j ? `${i}-${j}` : `${j}-${i}`;
-        // Un mismo par puede aparecer visto desde los dos nodos; si ya estaba
-        // guardado sin criterio (respaldo por cercanía) pero ahora aparece con
-        // uno compartido, nos quedamos con el que sí explica la conexión.
-        if (!pairs.has(key) || (pairs.get(key) === null && criterio)) {
-          pairs.set(key, criterio);
+      .forEach(({ j, criterios }) => {
+        const a = Math.min(i, j);
+        const b = Math.max(i, j);
+        const key = `${a}-${b}`;
+        // Un mismo par puede aparecer visto desde los dos nodos; si ya
+        // estaba guardado sin ningún criterio (respaldo por cercanía) pero
+        // ahora aparece con alguno, nos quedamos con la versión que sí
+        // explica la conexión.
+        const actual = basePairs.get(key);
+        if (!actual || (actual.criterios.length === 0 && criterios.length > 0)) {
+          basePairs.set(key, { a, b, criterios });
         }
       });
   }
 
-  return Array.from(pairs, ([key, criterio]) => {
+  // --- 2) Pares extra: todo lo que comparte algún criterio y no quedó en
+  // la red de fondo ---
+  const allPairs = Array.from(basePairs.values()).map((p) => ({ ...p, esExtra: false }));
+
+  compartidosPorPar.forEach((criterios, key) => {
+    if (basePairs.has(key)) return;
     const [a, b] = key.split("-").map(Number);
-    return { a, b, tipo: criterio?.tipo || null, valor: criterio?.valor || null };
+    allPairs.push({ a, b, criterios, esExtra: true });
   });
+
+  return allPairs;
 }
 
 // ===========================================================================
 // LÍNEAS DE CONEXIÓN
 // Se recalculan en cada frame para que sigan a la flotación y al arrastre.
+// Los pares "extra" (ver arriba) se dibujan igual que el resto pero con la
+// clase `linea-extra`, que el CSS deja en opacity 0 salvo que además tengan
+// `destacada` — así están listos para aparecer apenas se elige el criterio
+// que les corresponde, sin tener que reconstruir nada.
 // ===========================================================================
 
 function buildLines() {
-  lineEls = connectionPairs.map(({ tipo }) => {
+  lineEls = connectionPairs.map(({ esExtra }) => {
     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    if (tipo) line.classList.add(`conexion-${tipo}`); // color por criterio, ver CSS
+    if (esExtra) line.classList.add("linea-extra");
     svg.appendChild(line);
     return line;
   });
@@ -415,9 +450,9 @@ const leyendaEl = document.getElementById("leyenda-conexiones");
 let hoverIndex = null;
 const criteriosSeleccionados = new Set();
 
-function claveDe(par) {
-  return par.tipo && par.valor ? `${par.tipo}|${par.valor}` : null;
-}
+// Tipos que efectivamente pintan una línea de color (ver CSS) — el autor
+// quedó afuera de esta lista a propósito, ver criteriosCompartidos().
+const TIPOS_CONEXION = ["tecnica", "decada", "motivo", "emocion"];
 
 function actualizarResaltado() {
   const hayAlgoResaltado = hoverIndex !== null || criteriosSeleccionados.size > 0;
@@ -425,11 +460,28 @@ function actualizarResaltado() {
   if (hoverIndex !== null) nodosRelevantes.add(hoverIndex);
 
   connectionPairs.forEach((par, i) => {
-    const clave = claveDe(par);
-    const porHover = hoverIndex !== null && (par.a === hoverIndex || par.b === hoverIndex);
-    const porCriterio = clave !== null && criteriosSeleccionados.has(clave);
-    const destacada = porHover || porCriterio;
-    lineEls[i].classList.toggle("destacada", destacada);
+    // Los pares "extra" (ver buildConnectionPairs) solo se muestran cuando
+    // alguno de SUS criterios está elegido en la leyenda — nunca por hover,
+    // así pasar el mouse por una obra sigue mostrando solo sus vecinos de
+    // la red de fondo, como antes.
+    const porHover = !par.esExtra && hoverIndex !== null && (par.a === hoverIndex || par.b === hoverIndex);
+
+    // Un par puede compartir más de un criterio a la vez (ej. misma técnica
+    // Y mismo motivo): alcanza con que UNO de los elegidos en la leyenda
+    // esté entre los que comparte esta pareja de obras.
+    const criterioActivo = criteriosSeleccionados.size > 0
+      ? par.criterios.find((c) => criteriosSeleccionados.has(`${c.tipo}|${c.valor}`))
+      : null;
+
+    const destacada = porHover || !!criterioActivo;
+    const line = lineEls[i];
+
+    TIPOS_CONEXION.forEach((t) => line.classList.remove(`conexion-${t}`));
+    const tipoColor = criterioActivo ? criterioActivo.tipo : (par.criterios[0] || {}).tipo;
+    if (destacada && tipoColor) line.classList.add(`conexion-${tipoColor}`);
+
+    line.classList.toggle("destacada", destacada);
+
     if (destacada) {
       nodosRelevantes.add(par.a);
       nodosRelevantes.add(par.b);
@@ -457,11 +509,13 @@ function attachHoverHighlight(nodeEls) {
 }
 
 // Orden en el que se listan los criterios en la leyenda: de más específico
-// (autor) a más general (emoción) — el mismo orden en que se buscan en
-// criteriosCompartidos().
-const ORDEN_TIPOS = ["autor", "tecnica", "decada", "motivo", "emocion"];
+// (técnica) a más general (emoción) — el autor ya no es un criterio de
+// conexión (ver criteriosCompartidos), así que no aparece acá.
+const ORDEN_TIPOS = ["tecnica", "decada", "motivo", "emocion"];
+// Se usa solo para el aria-label de accesibilidad — el botón en pantalla
+// muestra nada más el valor (ver renderLeyenda), sin el prefijo "técnica:",
+// "motivo:", etc.
 const ETIQUETA_TIPO = {
-  autor: "autor",
   tecnica: "técnica",
   decada: "década",
   motivo: "motivo",
@@ -471,8 +525,10 @@ const ETIQUETA_TIPO = {
 function listarCriteriosExistentes(pairs) {
   const vistos = new Map(); // "tipo|valor" -> { tipo, valor }
   pairs.forEach((par) => {
-    const clave = claveDe(par);
-    if (clave && !vistos.has(clave)) vistos.set(clave, { tipo: par.tipo, valor: par.valor });
+    par.criterios.forEach(({ tipo, valor }) => {
+      const clave = `${tipo}|${valor}`;
+      if (!vistos.has(clave)) vistos.set(clave, { tipo, valor });
+    });
   });
 
   return Array.from(vistos.values()).sort((a, b) => {
@@ -489,7 +545,10 @@ function renderLeyenda(criterios) {
     const boton = document.createElement("button");
     boton.type = "button";
     boton.className = `leyenda-conexiones__item leyenda-conexiones__item--${tipo}`;
-    boton.textContent = `${ETIQUETA_TIPO[tipo] || tipo}: ${valor}`;
+    // Solo el valor (ej. "pintura", no "técnica: pintura") — el color del
+    // outline ya indica de qué tipo de criterio se trata.
+    boton.textContent = valor;
+    boton.setAttribute("aria-label", `${ETIQUETA_TIPO[tipo] || tipo}: ${valor}`);
     boton.setAttribute("aria-pressed", "false");
 
     boton.addEventListener("click", () => {

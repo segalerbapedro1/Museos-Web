@@ -258,6 +258,17 @@ code {
   opacity: 0.08;
 }
 
+/* Pares "extra" (script.js, buildConnectionPairs): obras que comparten un
+   criterio pero no entraron en la red de fondo por el límite de vecinos.
+   Quedan invisibles todo el tiempo — ni siquiera se atenúan como el resto
+   al resaltar algo — hasta que ESE criterio puntual se elige en la leyenda
+   de abajo, momento en el que pasan a ser "destacada" como cualquier otra
+   línea (ver regla siguiente) y se conectan todas las obras que lo
+   comparten, no solo las más cercanas en pantalla. */
+.connections line.linea-extra {
+  opacity: 0;
+}
+
 /* Las líneas destacadas sí muestran el color de SU criterio compartido (ver
    buildConnectionPairs en script.js) en vez del gris neutro. Las que
    además no tienen clase de criterio son puro respaldo por cercanía en
