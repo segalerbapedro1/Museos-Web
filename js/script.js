@@ -742,6 +742,7 @@ if (botonCriterios && criteriosPanelEl) {
 
 const botonRecorridoPropio = document.getElementById("boton-recorrido-propio");
 const botonReiniciarRecorrido = document.getElementById("boton-reiniciar-recorrido");
+const botonExportarRecorrido = document.getElementById("boton-exportar-recorrido");
 const hintRecorridoPropio = document.getElementById("recorrido-propio-hint");
 
 let modoRecorridoPropio = false;
@@ -770,6 +771,7 @@ function renderRecorridoPropio() {
   updateRecorridoPropioLines();
 
   if (botonReiniciarRecorrido) botonReiniciarRecorrido.hidden = recorridoPropio.length === 0;
+  if (botonExportarRecorrido) botonExportarRecorrido.hidden = recorridoPropio.length === 0;
 }
 
 function updateRecorridoPropioLines() {
@@ -828,6 +830,105 @@ if (botonReiniciarRecorrido) {
   botonReiniciarRecorrido.addEventListener("click", () => {
     recorridoPropio = [];
     renderRecorridoPropio();
+  });
+}
+
+// Descarga la colección armada como una imagen JPG: solo las obras elegidas
+// (donde estén paradas en pantalla en ese momento, arrastre incluido) más
+// las líneas rojas que las unen en el orden del recorrido — nada más (ni
+// numeritos, ni el resto de la red, ni texto del ensayo).
+function exportarRecorridoPropio() {
+  if (recorridoPropio.length === 0) return;
+
+  const MARGEN = 40; // aire alrededor del contenido, en px de pantalla
+  const MAX_LADO = 2600; // tope de tamaño del lienzo para no generar archivos gigantes
+
+  // Mismas coordenadas (viewport, post-arrastre) que ya usa
+  // updateRecorridoPropioLines() para dibujar las líneas en pantalla.
+  const rects = recorridoPropio.map((i) => nodes[i].getBoundingClientRect());
+
+  const minX = Math.min(...rects.map((r) => r.left)) - MARGEN;
+  const minY = Math.min(...rects.map((r) => r.top)) - MARGEN;
+  const maxX = Math.max(...rects.map((r) => r.right)) + MARGEN;
+  const maxY = Math.max(...rects.map((r) => r.bottom)) + MARGEN;
+  const anchoTotal = maxX - minX;
+  const altoTotal = maxY - minY;
+
+  const escalaLimite = Math.min(1, MAX_LADO / Math.max(anchoTotal, altoTotal));
+  const escala = escalaLimite * (window.devicePixelRatio || 1);
+
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.round(anchoTotal * escala);
+  canvas.height = Math.round(altoTotal * escala);
+  const ctx = canvas.getContext("2d");
+  ctx.scale(escala, escala);
+
+  // Fondo oscuro del sitio, para que no quede transparente/blanco (el JPG
+  // no soporta transparencia de todos modos).
+  ctx.fillStyle = "#141210";
+  ctx.fillRect(0, 0, anchoTotal, altoTotal);
+
+  const aLienzo = (r) => ({
+    left: r.left - minX,
+    top: r.top - minY,
+    width: r.width,
+    height: r.height,
+  });
+  const centro = (r) => {
+    const c = aLienzo(r);
+    return { x: c.left + c.width / 2, y: c.top + c.height / 2 };
+  };
+
+  // Las líneas van primero, para que las obras queden dibujadas por encima
+  // (igual que en pantalla).
+  ctx.strokeStyle = "rgb(227, 30, 30)";
+  ctx.lineWidth = 2;
+  ctx.globalAlpha = 0.9;
+  for (let k = 0; k < rects.length - 1; k++) {
+    const p1 = centro(rects[k]);
+    const p2 = centro(rects[k + 1]);
+    ctx.beginPath();
+    ctx.moveTo(p1.x, p1.y);
+    ctx.lineTo(p2.x, p2.y);
+    ctx.stroke();
+  }
+  ctx.globalAlpha = 1;
+
+  // Las imágenes ya están cargadas (son las mismas <img> de la pantalla,
+  // solo se redibujan en el lienzo) — no hace falta volver a pedirlas. Si
+  // alguna todavía no terminó de cargar (loading="lazy" y conexión lenta,
+  // por ejemplo) se la salta en vez de romper toda la exportación.
+  recorridoPropio.forEach((i, idx) => {
+    const imgEl = nodes[i].querySelector("img");
+    if (!imgEl || !imgEl.complete || imgEl.naturalWidth === 0) return;
+    const c = aLienzo(rects[idx]);
+    ctx.drawImage(imgEl, c.left, c.top, c.width, c.height);
+  });
+
+  canvas.toBlob((blob) => {
+    if (!blob) return;
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "mi-coleccion.jpg";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }, "image/jpeg", 0.92);
+}
+
+if (botonExportarRecorrido) {
+  botonExportarRecorrido.addEventListener("click", () => {
+    try {
+      exportarRecorridoPropio();
+    } catch (err) {
+      // Motivo más probable: el sitio se abrió como archivo local (file://)
+      // en vez de servido por http(s) — ahí el navegador bloquea leer los
+      // píxeles de las imágenes por seguridad ("lienzo contaminado").
+      console.error("No se pudo exportar la colección:", err);
+      window.alert("No se pudo generar la imagen. Si estás abriendo el sitio como archivo local, probá desde un servidor (por ejemplo, la versión publicada).");
+    }
   });
 }
 

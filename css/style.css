@@ -230,6 +230,9 @@ body.mostrar-recorrido .leyenda-conexiones {
   color: var(--ink-tenue);
   border-style: dashed;
 }
+.leyenda-conexiones__item--exportar {
+  --linea-criterio: rgb(var(--recorrido-propio));
+}
 
 .recorrido-propio-hint {
   flex: 0 0 auto;
