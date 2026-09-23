@@ -21,7 +21,7 @@ const TECNICAS_POSIBLES = [
 const MOTIVOS_POSIBLES = [
   "abstracción", "animales", "arquitectura", "árboles", "cuerpos", "dualidad",
   "figura solitaria", "mapa", "multitud", "objeto cortante", "objeto cotidiano",
-  "paisaje", "paisaje urbano", "rayos", "rostro", "personas",
+  "paisaje", "paisaje urbano", "rayos", "rostro",
 ];
 
 const EMOCIONES_POSIBLES = [
@@ -49,7 +49,7 @@ const NODE_GROUPS = {
         autor: "Oscar Bony",
         anio: 1998,
         tecnica: ["fotografía"],
-        motivos: ["rostro", "dualidad"],
+        motivos: ["rostro", "dualidad", "cuerpos"],
         emociones: ["tensión"],
       },
       {
@@ -73,7 +73,7 @@ const NODE_GROUPS = {
         autor: "Antonio Berni", anio: 1934, tecnica: ["pintura"], motivos: ["cuerpos", "multitud", "rostro"], emociones: ["tensión", "tristeza"]},
       { file: "01-doamoral-Abaporu.jpg", alt: "Abaporu, de Tarsila do Amaral, colección MALBA", title: "Tarsila do Amaral, Abaporu",
         autor: "Tarsila do Amaral", anio: 1928, tecnica: ["pintura"], motivos: ["cuerpos", "paisaje"], emociones: ["extrañeza"] },
-      { file: "02-kahlo-autoretrato.jpg", alt: "Autorretrato con chango y loro, de Frida Kahlo, colección MALBA", title: "Frida Kahlo, Autorretrato con chango y loro", autor: "Frida Kahlo", anio: 1942, tecnica: ["pintura"], motivos: ["rostro", "animales"], emociones: ["melancolía"]},
+      { file: "02-kahlo-autoretrato.jpg", alt: "Autorretrato con chango y loro, de Frida Kahlo, colección MALBA", title: "Frida Kahlo, Autorretrato con chango y loro", autor: "Frida Kahlo", anio: 1942, tecnica: ["pintura"], motivos: ["rostro", "animales", "cuerpos"], emociones: ["melancolía"]},
       { file: "06-lam-lamananaverde.jpg", alt: "La mañana verde, de Wifredo Lam, colección MALBA", title: "Wifredo Lam, La mañana verde",
         autor: "Wifredo Lam", anio: 1943, tecnica: ["pintura"], motivos: ["cuerpos", "animales"], emociones: ["extrañeza"] },
       { file: "08-matta-disasters.jpg", alt: "The Disasters of Mysticism, de Roberto Matta, colección MALBA", title: "Roberto Matta, The Disasters of Mysticism", autor: "Roberto Matta", anio: 1942, tecnica: ["pintura"], motivos: ["abstracción"], emociones: ["tensión"] },
@@ -86,8 +86,8 @@ const NODE_GROUPS = {
       { file: "10-delavega-rompecabezas.jpg", alt: "Rompecabezas, de Jorge de la Vega, colección MALBA", title: "Jorge de la Vega, Rompecabezas", autor: "Jorge de la Vega", anio: 1969, tecnica: ["pintura"], motivos: ["cuerpos", "rostro"], emociones: ["extrañeza"]},
       { file: "11-varo-icono1945.jpg", alt: "Ícono, de Remedios Varo, colección MALBA", title: "Remedios Varo, Ícono", autor: "Remedios Varo", anio: 1945, tecnica: ["pintura"], motivos: ["paisaje"], emociones: ["extrañeza"]},
       { file: "12-pettorutti-lacanciondelpueblo.jpg", alt: "La canción del pueblo, de Emilio Petorutti, colección MALBA", title: "Emilio Petorutti, La canción del pueblo", autor: "Emilio Petorutti", anio: 1927, tecnica: ["pintura"], motivos: ["cuerpos", "paisaje urbano"], emociones: ["extrañeza"]},
-      { file: "13-rivera-retratoderamongomezdelaserna.jpg", alt: "Retrato de Ramón Gómez de la Serna, de Diego Rivera, colección MALBA", title: "Diego Rivera, Retrato de Ramón Gómez de la Serna", autor: "Diego Rivera", anio: 1915, tecnica: ["pintura"], motivos: ["rostro"], emociones: ["extrañeza"]},
-      { file: "14-martins-oimpossivel.jpg", alt: "O Impossivel, de María Martins, colección MALBA", title: "María Martins, O Impossivel", autor: "María Martins", anio: 1945, tecnica: ["escultura"], motivos: ["personas", "cuerpos", "dualidad"], emociones: ["extrañeza", "tensión"]},
+      { file: "13-rivera-retratoderamongomezdelaserna.jpg", alt: "Retrato de Ramón Gómez de la Serna, de Diego Rivera, colección MALBA", title: "Diego Rivera, Retrato de Ramón Gómez de la Serna", autor: "Diego Rivera", anio: 1915, tecnica: ["pintura"], motivos: ["rostro", "cuerpos"], emociones: ["extrañeza"]},
+      { file: "14-martins-oimpossivel.jpg", alt: "O Impossivel, de María Martins, colección MALBA", title: "María Martins, O Impossivel", autor: "María Martins", anio: 1945, tecnica: ["escultura"], motivos: ["cuerpos", "dualidad"], emociones: ["extrañeza", "tensión"]},
       { file: "15-prati-composicionserial.jpg", alt: "Composición serial, de Lidy Prati, colección MALBA", title: "Lidy Prati, Composición serial", autor: "Lidy Prati", anio: 1948, tecnica: ["pintura"], motivos: ["abstracción"], emociones: ["calma"]},
       { file: "16-torresgarcia-escenacallejera.jpg", alt: "Escena callejera o Calle de París o Constructivo, de Joaquín Torres García, colección MALBA", title: "Joaquín Torres García, Escena callejera o Calle de París o Constructivo", autor: "Joaquín Torres García", anio: 1930, tecnica: ["pintura"], motivos: ["cuerpos", "multitud", "paisaje urbano"], emociones: ["extrañeza"] },
       { file: "17-solar-dosmestizos.jpg", alt: "Dos mestizos de avión y gente, de Xul Solar, colección MALBA", title: "Xul Solar, Dos mestizos de avión y gente", autor: "Xul Solar", anio: 1935, tecnica: ["pintura"], motivos: ["cuerpos", "dualidad", "paisaje", "multitud"], emociones: ["extrañeza", "tensión"] },  
@@ -96,11 +96,11 @@ const NODE_GROUPS = {
       { file: "20-solar-jol.jpg", alt: "Jol, de Xul Solar, colección MALBA", title: "Xul Solar, Jol", autor: "Xul Solar", anio: 1926, tecnica: ["pintura"], motivos: ["cuerpos", "multitud", "paisaje urbano"], emociones: ["extrañeza"] },   
       { file: "21-solar-tres.jpg", alt: "Los tres, de Xul Solar, colección MALBA", title: "Xul Solar, Los tres", autor: "Xul Solar", anio: 1923, tecnica: ["pintura"], motivos: ["cuerpos"], emociones: ["extrañeza"] },
       { file: "22-oiticica-metaesquema.jpg", alt: "Metaesquema, de Hélio Oiticica, colección MALBA", title: "Hélio Oiticica, Metaesquema", autor: "Hélio Oiticica", anio: 1958, tecnica: ["pintura"], motivos: ["abstracción"], emociones: ["calma"] },
-      { file: "23-lindner-portfolio.jpg", alt: "Portfolio de 120 dibujos, de Lux Lindner, colección MALBA", title: "Lux Lindner, Portfolio de 120 dibujos", autor: "Lux Lindner", anio: 1991, tecnica: ["dibujo"], motivos: ["abstracción", "cuerpos", "rostro", "personas"], emociones: ["calma"] },
-      { file: "24-schvartz-batato.jpg", alt: "Batato, de Marcia Schvartz, colección MALBA", title: "Marcia Schvartz, Batato", autor: "Marcia Schvartz", anio: 1989, tecnica: ["pintura"], motivos: ["cuerpos", "rostro", "personas"], emociones: ["tensión", "contemplación", "melancolía"] },
-      { file: "25-deira-nuevevariaciones.jpg", alt: "Nueve variaciones para un bastidor bien tensado, de Ernesto Deira, colección MALBA", title: "Ernesto Deira, Nueve variaciones para un bastidor bien tensado", autor: "Ernesto Deira", anio: 1965, tecnica: ["pintura"], motivos: ["abstracción", "cuerpos", "rostro", "personas"], emociones: ["confusión", "tensión"] },
-      { file: "26-heinrich-lamano.jpg", alt: "La mano, de Annemarie Heinrich, colección MALBA", title: "Annemarie Heinrich, La mano", autor: "Annemarie Heinrich", anio: 1953, tecnica: ["fotografía"], motivos: ["cuerpos", "rostro", "personas"], emociones: ["confusión", "extrañeza"] },
-      { file: "27-pla-milcarassarli.jpg", alt: "Las mil caras de Isabel Sarli, de Eduardo Pla, colección MALBA", title: "Eduardo Pla, Las mil caras de Isabel Sarli", autor: "Eduardo Pla", anio: 2006, tecnica: ["fotografía"], motivos: ["cuerpos", "rostro", "personas"], emociones: ["melancolía", "extrañeza"] },
+      { file: "23-lindner-portfolio.jpg", alt: "Portfolio de 120 dibujos, de Lux Lindner, colección MALBA", title: "Lux Lindner, Portfolio de 120 dibujos", autor: "Lux Lindner", anio: 1991, tecnica: ["dibujo"], motivos: ["abstracción", "cuerpos", "rostro"], emociones: ["calma"] },
+      { file: "24-schvartz-batato.jpg", alt: "Batato, de Marcia Schvartz, colección MALBA", title: "Marcia Schvartz, Batato", autor: "Marcia Schvartz", anio: 1989, tecnica: ["pintura"], motivos: ["cuerpos", "rostro"], emociones: ["tensión", "contemplación", "melancolía"] },
+      { file: "25-deira-nuevevariaciones.jpg", alt: "Nueve variaciones para un bastidor bien tensado, de Ernesto Deira, colección MALBA", title: "Ernesto Deira, Nueve variaciones para un bastidor bien tensado", autor: "Ernesto Deira", anio: 1965, tecnica: ["pintura"], motivos: ["abstracción", "cuerpos", "rostro"], emociones: ["confusión", "tensión"] },
+      { file: "26-heinrich-lamano.jpg", alt: "La mano, de Annemarie Heinrich, colección MALBA", title: "Annemarie Heinrich, La mano", autor: "Annemarie Heinrich", anio: 1953, tecnica: ["fotografía"], motivos: ["cuerpos", "rostro"], emociones: ["confusión", "extrañeza"] },
+      { file: "27-pla-milcarassarli.jpg", alt: "Las mil caras de Isabel Sarli, de Eduardo Pla, colección MALBA", title: "Eduardo Pla, Las mil caras de Isabel Sarli", autor: "Eduardo Pla", anio: 2006, tecnica: ["fotografía"], motivos: ["cuerpos", "rostro"], emociones: ["melancolía", "extrañeza"] },
     ],
   },
 
@@ -113,29 +113,29 @@ const NODE_GROUPS = {
         autor: "Luis Felipe Noé", anio: 1991, tecnica: ["pintura"], motivos: ["paisaje", "rayos"], emociones: ["contemplación"]},
       { file: "02-malharro-crepusculo.jpg", alt: "Crespúsculo, de Martín Malharro, colección Amalita", title: "Martín Malharro, Crespúsculo",
         autor: "Martín Malharro", anio: 1901, tecnica: ["pintura"], motivos: ["paisaje", "árboles"], emociones: ["contemplación"]},
-      { file: "03-warhol-amalita.jpg", alt: "Retrato de la Sra. Amalia Lacroze de Fortabat de Andy Warhol, colección Amalita", title: "Andy Warhol, Retrato de la Sra. Amalia Lacroze de Fortabat", autor: "Andy Warhol", anio: 1980, tecnica: ["pintura"], motivos: ["rostro"], emociones: ["admiración"]},
+      { file: "03-warhol-amalita.jpg", alt: "Retrato de la Sra. Amalia Lacroze de Fortabat de Andy Warhol, colección Amalita", title: "Andy Warhol, Retrato de la Sra. Amalia Lacroze de Fortabat", autor: "Andy Warhol", anio: 1980, tecnica: ["pintura"], motivos: ["rostro", "cuerpos"], emociones: ["admiración"]},
       { file: "04-malharro-atardecer.jpg", alt: "Atardecer, de Martín Malharro, colección Amalita", title: "Martín Malharro, Atardecer",
         autor: "Martín Malharro", anio: 1911, tecnica: ["pintura"], motivos: ["paisaje", "árboles", "cielo"], emociones: ["contemplación"]}, 
       { file: "05-fader-tropilla.jpg", alt: "La tropilla, de Fernando Fader, colección Amalita", title: "Fernando Fader, La tropilla",
         autor: "Fernando Fader", anio: 1907, tecnica: ["pintura"], motivos: ["paisaje", "animales", "cielo"], emociones: ["contemplación"]},
       { file: "06-libian-fuegos.jpg", alt: "Fuegos de Artificio, de Valentín Thibon de Libian, colección Amalita", title: "Valentín Thibon de Libian, Fuegos de Artificio", autor: "Valentín Thibon de Libian", anio: null, tecnica: ["pintura"], motivos: ["paisaje urbano", "multitud", "cielo"], emociones: ["contemplación", "calma", "melancolía"]},
-      { file: "07-alonso-oreja.jpg", alt: "La oreja, de Carlos Alonso, colección Amalita", title: "Carlos Alonso, La oreja", autor: "Carlos Alonso", anio: 1972, tecnica: ["pintura"], motivos: ["rostro"], emociones: ["extrañeza", "tensión"]},
+      { file: "07-alonso-oreja.jpg", alt: "La oreja, de Carlos Alonso, colección Amalita", title: "Carlos Alonso, La oreja", autor: "Carlos Alonso", anio: 1972, tecnica: ["pintura"], motivos: ["rostro", "cuerpos"], emociones: ["extrañeza", "tensión"]},
       { file: "08-alonso-invierno.jpg", alt: "Fin del Invierno, de Carlos Alonso, colección Amalita", title: "Carlos Alonso, Fin del Invierno", autor: "Carlos Alonso", anio: 1974, tecnica: ["pintura"], motivos: ["paisaje"], emociones: ["extrañeza", "contemplación"]},
-      { file: "09-basaldua-mml.jpg", alt: "Retrato de Manuel Mujica Lainez, de Héctor Basaldúa, colección Amalita", title: "Héctor Basaldúa, Retrato de Manuel Mujica Lainez", autor: "Héctor Basaldúa", anio: 1942, tecnica: ["pintura"], motivos: ["rostro"], emociones: ["contemplación"]},
+      { file: "09-basaldua-mml.jpg", alt: "Retrato de Manuel Mujica Lainez, de Héctor Basaldúa, colección Amalita", title: "Héctor Basaldúa, Retrato de Manuel Mujica Lainez", autor: "Héctor Basaldúa", anio: 1942, tecnica: ["pintura"], motivos: ["rostro", "cuerpos"], emociones: ["contemplación"]},
       { file: "10-benedit-tijera.jpg", alt: "Caja de Campo - Tijera de castrar, de Luis Fernando Benedit, colección Amalita", title: "Luis Fernando Benedit, Caja de Campo - Tijera de castrar", autor: "Luis Fernando Benedit", anio: 1978, tecnica: ["escultura"], motivos: ["objeto cortante"], emociones: ["extrañeza"]},
-      { file: "11-berni-almuerzo.jpg", alt: "Domingo en la chacra o El almuerzo, de Antonio Berni, colección Amalita", title: "Antonio Berni, Domingo en la chacra o El almuerzo", autor: "Antonio Berni", anio: 1945, tecnica: ["pintura"], motivos: ["multitud", "rostro", "paisaje"], emociones: ["contemplación", "extrañeza"]},  
-      { file: "12-berni-difunta.jpg", alt: "La Difunta Correa, de Antonio Berni, colección Amalita", title: "Antonio Berni, La Difunta Correa", autor: "Antonio Berni", anio: 1971, tecnica: ["instalación", "pintura"], motivos: ["paisaje"], emociones: ["contemplación", "extrañeza"]}, 
-      { file: "13-fader-duraznos.jpg", alt: "Entre duraznos floridos, de Fernando Fader, colección Amalita", title: "Fernando Fader, Entre duraznos floridos", autor: "Fernando Fader", anio: 1915, tecnica: ["pintura"], motivos: ["paisaje", "árboles", "personas"], emociones: ["calma", "melancolía"]},
-      { file: "14-solar-bripaisgente.jpg", alt: "Bri-País-Gente, de Xul Solar, colección Amalita", title: "Xul Solar, Bri-País-Gente", autor: "Xul Solar", anio: 1933, tecnica: ["pintura"], motivos: ["paisaje urbano", "multitud", "personas", "abstracción"], emociones: ["calma", "melancolía", "extrañeza"]},
-      { file: "15-solar-noche.jpg", alt: "Noche, de Xul Solar, colección Amalita", title: "Xul Solar, Noche", autor: "Xul Solar", anio: 1933, tecnica: ["pintura"], motivos: ["paisaje urbano", "multitud", "personas", "abstracción"], emociones: ["calma", "melancolía", "extrañeza"]},
-      { file: "16-solar-zigzag.jpg", alt: "Zig-zag, de Xul Solar, colección Amalita", title: "Xul Solar, Zig-zag", autor: "Xul Solar", anio: 1949, tecnica: ["pintura"], motivos: ["paisaje urbano", "multitud", "personas", "abstracción"], emociones: ["calma", "melancolía", "extrañeza"]},
-      { file: "17-solar-cupulas.jpg", alt: "Cúpulas, de Xul Solar, colección Amalita", title: "Xul Solar, Cúpulas", autor: "Xul Solar", anio: 1948, tecnica: ["pintura"], motivos: ["paisaje urbano", "multitud", "personas", "abstracción"], emociones: ["calma", "melancolía", "extrañeza"]},
+      { file: "11-berni-almuerzo.jpg", alt: "Domingo en la chacra o El almuerzo, de Antonio Berni, colección Amalita", title: "Antonio Berni, Domingo en la chacra o El almuerzo", autor: "Antonio Berni", anio: 1945, tecnica: ["pintura"], motivos: ["multitud", "rostro", "paisaje", "cuerpos"], emociones: ["contemplación", "extrañeza"]},  
+      { file: "12-berni-difunta.jpg", alt: "La Difunta Correa, de Antonio Berni, colección Amalita", title: "Antonio Berni, La Difunta Correa", autor: "Antonio Berni", anio: 1971, tecnica: ["instalación", "pintura"], motivos: ["paisaje", "cuerpos"], emociones: ["contemplación", "extrañeza"]}, 
+      { file: "13-fader-duraznos.jpg", alt: "Entre duraznos floridos, de Fernando Fader, colección Amalita", title: "Fernando Fader, Entre duraznos floridos", autor: "Fernando Fader", anio: 1915, tecnica: ["pintura"], motivos: ["paisaje", "árboles", "cuerpos"], emociones: ["calma", "melancolía"]},
+      { file: "14-solar-bripaisgente.jpg", alt: "Bri-País-Gente, de Xul Solar, colección Amalita", title: "Xul Solar, Bri-País-Gente", autor: "Xul Solar", anio: 1933, tecnica: ["pintura"], motivos: ["paisaje urbano", "multitud", "cuerpos", "abstracción"], emociones: ["calma", "melancolía", "extrañeza"]},
+      { file: "15-solar-noche.jpg", alt: "Noche, de Xul Solar, colección Amalita", title: "Xul Solar, Noche", autor: "Xul Solar", anio: 1933, tecnica: ["pintura"], motivos: ["paisaje urbano", "multitud", "cuerpos", "abstracción"], emociones: ["calma", "melancolía", "extrañeza"]},
+      { file: "16-solar-zigzag.jpg", alt: "Zig-zag, de Xul Solar, colección Amalita", title: "Xul Solar, Zig-zag", autor: "Xul Solar", anio: 1949, tecnica: ["pintura"], motivos: ["paisaje urbano", "multitud", "cuerpos", "abstracción"], emociones: ["calma", "melancolía", "extrañeza"]},
+      { file: "17-solar-cupulas.jpg", alt: "Cúpulas, de Xul Solar, colección Amalita", title: "Xul Solar, Cúpulas", autor: "Xul Solar", anio: 1948, tecnica: ["pintura"], motivos: ["paisaje urbano", "multitud", "cuerpos", "abstracción"], emociones: ["calma", "melancolía", "extrañeza"]},
       { file: "18-solar-pantree.jpg", alt: "Pan-tree, de Xul Solar, colección Amalita", title: "Xul Solar, Pan-tree", autor: "Xul Solar", anio: 1954, tecnica: ["pintura"], motivos: ["abstracción"], emociones: ["extrañeza"]},
       { file: "19-solar-pantree2.jpg", alt: "Pan-tree, de Xul Solar, colección Amalita", title: "Xul Solar, Pan-tree", autor: "Xul Solar", anio: 1953, tecnica: ["pintura"], motivos: ["abstracción"], emociones: ["extrañeza"]},
       { file: "20-solar-horoscopomml.jpg", alt: "Horóscopo de Manuel Mujica Láinez, de Xul Solar, colección Amalita", title: "Xul Solar, Horóscopo de Manuel Mujica Láinez", autor: "Xul Solar", anio: 1953, tecnica: ["pintura"], motivos: ["abstracción"], emociones: ["extrañeza"]},
-      { file: "21-vidalquadras-retratoamalita.jpg", alt: "Retrato de la señora Amalia Lacroze de Fortabat, de Alejo Vidal–Quadras, colección Amalita", title: "Alejo Vidal–Quadras, Retrato de la señora Amalia Lacroze de Fortabat", autor: "Alejo Vidal–Quadras", anio: 1946, tecnica: ["pintura"], motivos: ["rostro", "cuerpo"], emociones: ["contemplación"]},
-      { file: "22-vidalquadras-retratoalfredo.jpg", alt: "Retrato del señor Alfredo Fortabat, de Alejo Vidal–Quadras, colección Amalita", title: "Alejo Vidal–Quadras, Retrato del señor Alfredo Fortabat", autor: "Alejo Vidal–Quadras", anio: 1961, tecnica: ["pintura"], motivos: ["rostro", "cuerpo"], emociones: ["contemplación"]},
-      { file: "23-vidalquadras-retratoamalita.jpg", alt: "Retrato de la señora Amalia Lacroze de Fortabat, de Alejo Vidal–Quadras, colección Amalita", title: "Alejo Vidal–Quadras, Retrato de la señora Amalia Lacroze de Fortabat", autor: "Alejo Vidal–Quadras", anio: 1962, tecnica: ["pintura"], motivos: ["rostro", "cuerpo"], emociones: ["contemplación"]},
+      { file: "21-vidalquadras-retratoamalita.jpg", alt: "Retrato de la señora Amalia Lacroze de Fortabat, de Alejo Vidal–Quadras, colección Amalita", title: "Alejo Vidal–Quadras, Retrato de la señora Amalia Lacroze de Fortabat", autor: "Alejo Vidal–Quadras", anio: 1946, tecnica: ["pintura"], motivos: ["rostro", "cuerpos"], emociones: ["contemplación"]},
+      { file: "22-vidalquadras-retratoalfredo.jpg", alt: "Retrato del señor Alfredo Fortabat, de Alejo Vidal–Quadras, colección Amalita", title: "Alejo Vidal–Quadras, Retrato del señor Alfredo Fortabat", autor: "Alejo Vidal–Quadras", anio: 1961, tecnica: ["pintura"], motivos: ["rostro", "cuerpos"], emociones: ["contemplación"]},
+      { file: "23-vidalquadras-retratoamalita.jpg", alt: "Retrato de la señora Amalia Lacroze de Fortabat, de Alejo Vidal–Quadras, colección Amalita", title: "Alejo Vidal–Quadras, Retrato de la señora Amalia Lacroze de Fortabat", autor: "Alejo Vidal–Quadras", anio: 1962, tecnica: ["pintura"], motivos: ["rostro", "cuerpos"], emociones: ["contemplación"]},
     ],
   },
 };
@@ -598,10 +598,10 @@ function attachHoverHighlight(nodeEls) {
   });
 }
 
-// Orden en el que se listan los criterios en la leyenda: de más específico
-// (técnica) a más general (emoción) — el autor ya no es un criterio de
+// Orden en el que se listan los criterios en la leyenda: motivo y emoción
+// primero, técnica y década al final — el autor ya no es un criterio de
 // conexión (ver criteriosCompartidos), así que no aparece acá.
-const ORDEN_TIPOS = ["tecnica", "decada", "motivo", "emocion"];
+const ORDEN_TIPOS = ["motivo", "emocion", "tecnica", "decada"];
 // Se usa solo para el aria-label de accesibilidad — el botón en pantalla
 // muestra nada más el valor (ver renderLeyenda), sin el prefijo "técnica:",
 // "motivo:", etc.
