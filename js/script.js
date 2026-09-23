@@ -7,75 +7,117 @@
 // falta tocar el HTML ni escribir <figure> a mano.
 // ===========================================================================
 
+// Listas de referencia — el código no las necesita para funcionar (técnica,
+// motivos y emociones son texto libre en cada obra, los tres en forma de
+// array — una obra puede tener varias técnicas, varios motivos y varias
+// emociones a la vez), pero repetir EXACTAMENTE las mismas palabras entre
+// obras es lo que hace que se conecten entre sí. Sumá acá cualquier
+// técnica/motivo/emoción nuevo que uses, para no terminar escribiendo la
+// misma idea con sinónimos distintos sin querer.
+const TECNICAS_POSIBLES = [
+  "escultura", "fotografía", "instalación", "pintura",
+];
+
+const MOTIVOS_POSIBLES = [
+  "abstracción", "animales", "arquitectura", "árboles", "cuerpos", "dualidad",
+  "figura solitaria", "mapa", "multitud", "objeto cortante", "objeto cotidiano",
+  "paisaje", "paisaje urbano", "rayos", "rostro", "personas",
+];
+
+const EMOCIONES_POSIBLES = [
+  "calma", "contemplación", "euforia", "extrañeza", "melancolía", "tensión", "tristeza",
+];
+
 const NODE_GROUPS = {
   salapays: {
     folder: "images/salapays/",
     caption: "Sala Pays",
     shadowClass: "shadow-turquesa",
     images: [
-      { file: "obra-hacha.jpg", alt: "Instalación con un hacha clavada sobre un mapa, obra en Sala Pays" },
-      { file: "obra-culpable-inocente.jpg", alt: "Dos retratos enfrentados con las inscripciones culpable e inocente, obra en Sala Pays" },
-      { file: "obra-evidencia.jpg", alt: "Peluca, revólver y cartera dispuestos sobre un panel, obra en Sala Pays" },
+      {
+        file: "obra-hacha.jpg",
+        alt: "Instalación con un hacha clavada sobre un mapa, obra en Sala Pays",
+        autor: "Horacio Zabala",
+        anio: 1972,
+        tecnica: ["escultura"], // revisá si es la técnica correcta
+        motivos: ["mapa", "objeto cortante"],
+        emociones: ["tensión"],
+      },
+      {
+        file: "obra-culpable-inocente.jpg",
+        alt: "Dos retratos enfrentados con las inscripciones culpable e inocente, obra en Sala Pays",
+        autor: "Oscar Bony",
+        anio: 1998,
+        tecnica: ["fotografía"],
+        motivos: ["rostro", "dualidad"],
+        emociones: ["tensión"],
+      },
+      {
+        file: "obra-evidencia.jpg",
+        alt: "Peluca, revólver y cartera dispuestos sobre un panel, obra en Sala Pays",
+        autor: null, // completar
+        anio: null, // completar
+        tecnica: ["instalación"], // revisá si es la técnica correcta
+        motivos: ["objeto cortante", "objeto cotidiano"],
+        emociones: ["extrañeza"],
+      },
     ],
   },
+
   malba: {
     folder: "images/malba/",
-    caption: "MALBA",
+    caption: "Malba",
     shadowClass: "shadow-lima",
     images: [
-      { file: "2001.02.jpg", alt: "Obra de la colección MALBA" },
-      { file: "2013.14.jpg", alt: "Obra de la colección MALBA" },
-      { file: "2019.16.Althabe-Julian.PH-Catalina-Romero.Alta_.1.jpg", alt: "Obra de la colección MALBA" },
-      { file: "2020-06-06-115741.jpg", alt: "Obra de la colección MALBA" },
-      { file: "2020-06-08-112954.jpg", alt: "Obra de la colección MALBA" },
-      { file: "2020-06-09-111559.jpg", alt: "Obra de la colección MALBA" },
-      { file: "2021-04-12-105924.jpg", alt: "Obra de la colección MALBA" },
-      { file: "2022-06-09-161755.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_1009.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_1010.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_1013.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_1014.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_1098.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_1099.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_1139.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_1264.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_1278.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_1337.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_1380.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_1433.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_1461.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_1529.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_1530.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_579.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_632.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_702.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_722.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_726.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_742.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_761.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_766.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_771.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_797.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_940.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_970.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_973.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_980.jpg", alt: "Obra de la colección MALBA" },
-      { file: "A_982.jpg", alt: "Obra de la colección MALBA" },
-      { file: "alys.jpg", alt: "Obra de Francis Alÿs, colección MALBA", title: "Francis Alÿs" },
-      { file: "Arden-Quin-Composicion-001.jpg", alt: "Composición, de Carmelo Arden Quin, colección MALBA", title: "Carmelo Arden Quin, Composición" },
-      { file: "Barradas-Quiosco-de-Canaletas-008.jpg", alt: "Quiosco de Canaletas, de Rafael Barradas, colección MALBA", title: "Rafael Barradas, Quiosco de Canaletas" },
-      { file: "Berni-Manifestacion-023-1.jpg", alt: "Manifestación, de Antonio Berni, colección MALBA", title: "Antonio Berni, Manifestación" },
-      { file: "De-la-vega-armado-ret-1.jpg", alt: "Retrato armado, de Jorge de la Vega, colección MALBA", title: "Jorge de la Vega, Retrato armado" },
-      { file: "Do-Amaral-Abaporu-067-1.jpg", alt: "Abaporu, de Tarsila do Amaral, colección MALBA", title: "Tarsila do Amaral, Abaporu" },
-      { file: "Kahlo-Autorretrato-con-chango-y-loro-102-1.jpg", alt: "Autorretrato con chango y loro, de Frida Kahlo, colección MALBA", title: "Frida Kahlo, Autorretrato con chango y loro" },
-      { file: "Lam-la-manana-verde-108-1.jpg", alt: "La mañana verde, de Wifredo Lam, colección MALBA", title: "Wifredo Lam, La mañana verde" },
-      { file: "Martins-O-impossivel-119.jpg", alt: "O impossível, de Maria Martins, colección MALBA", title: "Maria Martins, O impossível" },
-      { file: "Matta-The-disasters-of-Mysticism-122.jpg", alt: "The Disasters of Mysticism, de Roberto Matta, colección MALBA", title: "Roberto Matta, The Disasters of Mysticism" },
-      { file: "Oiticica-Metaesquema-2001-124-137-1.jpg", alt: "Metaesquema, de Hélio Oiticica, colección MALBA", title: "Hélio Oiticica, Metaesquema" },
-      { file: "Pettoruti-Vallombrosa-151-1.jpg", alt: "Vallombrosa, de Emilio Pettoruti, colección MALBA", title: "Emilio Pettoruti, Vallombrosa" },
-      { file: "Portinari-Festa-de-Sao-Joao-171-1.jpg", alt: "Festa de São João, de Cândido Portinari, colección MALBA", title: "Cândido Portinari, Festa de São João" },
-      { file: "Torres-Garcia-Composicion-simetrica-universal-200.jpg", alt: "Composición simétrica universal, de Joaquín Torres García, colección MALBA", title: "Joaquín Torres García, Composición simétrica universal" },
-      { file: "Xul-Pareja2001-181-212.jpg", alt: "Pareja, de Xul Solar, colección MALBA", title: "Xul Solar, Pareja" },
+      { file: "03-berni-manifestacion.jpg", alt: "Manifestación, de Antonio Berni, colección MALBA", title: "Antonio Berni, Manifestación",
+        autor: "Antonio Berni", anio: 1934, tecnica: ["pintura"], motivos: ["cuerpos", "multitud", "rostro"], emociones: ["tensión", "tristeza"]},
+      { file: "01-doamoral-Abaporu.jpg", alt: "Abaporu, de Tarsila do Amaral, colección MALBA", title: "Tarsila do Amaral, Abaporu",
+        autor: "Tarsila do Amaral", anio: 1928, tecnica: ["pintura"], motivos: ["cuerpos", "paisaje"], emociones: ["extrañeza"] },
+      { file: "02-kahlo-autoretrato.jpg", alt: "Autorretrato con chango y loro, de Frida Kahlo, colección MALBA", title: "Frida Kahlo, Autorretrato con chango y loro", autor: "Frida Kahlo", anio: 1942, tecnica: ["pintura"], motivos: ["rostro", "animales"], emociones: ["melancolía"]},
+      { file: "06-lam-lamananaverde.jpg", alt: "La mañana verde, de Wifredo Lam, colección MALBA", title: "Wifredo Lam, La mañana verde",
+        autor: "Wifredo Lam", anio: 1943, tecnica: ["pintura"], motivos: ["cuerpos", "animales"], emociones: ["extrañeza"] },
+      { file: "08-matta-disasters.jpg", alt: "The Disasters of Mysticism, de Roberto Matta, colección MALBA", title: "Roberto Matta, The Disasters of Mysticism", autor: "Roberto Matta", anio: 1942, tecnica: ["pintura"], motivos: ["abstracción"], emociones: ["tensión"] },
+      { file: "07-oiticica-metaesquema.jpg", alt: "Metaesquema, de Hélio Oiticica, colección MALBA", title: "Hélio Oiticica, Metaesquema",
+        autor: "Hélio Oiticica", anio: 1958, tecnica: ["pintura"], motivos: ["abstracción"], emociones: ["calma"] },
+      { file: "09-portinari-festa.jpg", alt: "Festa de São João, de Cândido Portinari, colección MALBA", title: "Cândido Portinari, Festa de São João", autor: "Cândido Portinari", anio: 1936, tecnica: ["pintura"], motivos: ["cuerpos", "multitud"], emociones: ["contemplación", "extrañeza"] },
+      { file: "04-torresgarcia-composicion.jpg", alt: "Composición simétrica universal, de Joaquín Torres García, colección MALBA", title: "Joaquín Torres García, Composición simétrica universal", autor: "Joaquín Torres García", anio: 1931, tecnica: ["pintura"], motivos: ["abstracción"], emociones: ["extrañeza"] },
+      { file: "05-solar-pareja.jpg", alt: "Pareja, de Xul Solar, colección MALBA", title: "Xul Solar, Pareja",
+        autor: "Xul Solar", anio: 1923, tecnica: ["pintura"], motivos: ["cuerpos", "dualidad", "rostro"], emociones: ["extrañeza"]},
+    ],
+  },
+
+  amalita: {
+    folder: "images/amalita/",
+    caption: "Colección Amalita",
+    shadowClass: "shadow-amalita",
+    images: [
+      { file: "01-noe-tormenta.jpg", alt: "Tormenta en la Pampa. Homenaje a una pintura escrita por Sarmiento, de Luis Felipe Noé, colección Amalita", title: "Luis Felipe Noé, Tormenta en la Pampa. Homenaje a una pintura escrita por Sarmiento",
+        autor: "Luis Felipe Noé", anio: 1991, tecnica: ["pintura"], motivos: ["paisaje", "rayos"], emociones: ["contemplación"]},
+      { file: "02-malharro-crepusculo.jpg", alt: "Crespúsculo, de Martín Malharro, colección Amalita", title: "Martín Malharro, Crespúsculo",
+        autor: "Martín Malharro", anio: 1901, tecnica: ["pintura"], motivos: ["paisaje", "árboles"], emociones: ["contemplación"]},
+      { file: "03-warhol-amalita.jpg", alt: "Retrato de la Sra. Amalia Lacroze de Fortabat de Andy Warhol, colección Amalita", title: "Andy Warhol, Retrato de la Sra. Amalia Lacroze de Fortabat", autor: "Andy Warhol", anio: 1980, tecnica: ["pintura"], motivos: ["rostro"], emociones: ["admiración"]},
+      { file: "04-malharro-atardecer.jpg", alt: "Atardecer, de Martín Malharro, colección Amalita", title: "Martín Malharro, Atardecer",
+        autor: "Martín Malharro", anio: 1911, tecnica: ["pintura"], motivos: ["paisaje", "árboles", "cielo"], emociones: ["contemplación"]}, 
+      { file: "05-fader-tropilla.jpg", alt: "La tropilla, de Fernando Fader, colección Amalita", title: "Fernando Fader, La tropilla",
+        autor: "Fernando Fader", anio: 1907, tecnica: ["pintura"], motivos: ["paisaje", "animales", "cielo"], emociones: ["contemplación"]},
+      { file: "06-libian-fuegos.jpg", alt: "Fuegos de Artificio, de Valentín Thibon de Libian, colección Amalita", title: "Valentín Thibon de Libian, Fuegos de Artificio", autor: "Valentín Thibon de Libian", anio: null, tecnica: ["pintura"], motivos: ["paisaje urbano", "multitud", "cielo"], emociones: ["contemplación", "calma", "melancolía"]},
+      { file: "07-alonso-oreja.jpg", alt: "La oreja, de Carlos Alonso, colección Amalita", title: "Carlos Alonso, La oreja", autor: "Carlos Alonso", anio: 1972, tecnica: ["pintura"], motivos: ["rostro"], emociones: ["extrañeza", "tensión"]},
+      { file: "08-alonso-invierno.jpg", alt: "Fin del Invierno, de Carlos Alonso, colección Amalita", title: "Carlos Alonso, Fin del Invierno", autor: "Carlos Alonso", anio: 1974, tecnica: ["pintura"], motivos: ["paisaje"], emociones: ["extrañeza", "contemplación"]},
+      { file: "09-basaldua-mml.jpg", alt: "Retrato de Manuel Mujica Lainez, de Héctor Basaldúa, colección Amalita", title: "Héctor Basaldúa, Retrato de Manuel Mujica Lainez", autor: "Héctor Basaldúa", anio: 1942, tecnica: ["pintura"], motivos: ["rostro"], emociones: ["contemplación"]},
+      { file: "10-benedit-tijera.jpg", alt: "Caja de Campo - Tijera de castrar, de Luis Fernando Benedit, colección Amalita", title: "Luis Fernando Benedit, Caja de Campo - Tijera de castrar", autor: "Luis Fernando Benedit", anio: 1978, tecnica: ["escultura"], motivos: ["objeto cortante"], emociones: ["extrañeza"]},
+      { file: "11-berni-almuerzo.jpg", alt: "Domingo en la chacra o El almuerzo, de Antonio Berni, colección Amalita", title: "Antonio Berni, Domingo en la chacra o El almuerzo", autor: "Antonio Berni", anio: 1945, tecnica: ["pintura"], motivos: ["multitud", "rostro", "paisaje"], emociones: ["contemplación", "extrañeza"]},  
+      { file: "12-berni-difunta.jpg", alt: "La Difunta Correa, de Antonio Berni, colección Amalita", title: "Antonio Berni, La Difunta Correa", autor: "Antonio Berni", anio: 1971, tecnica: ["instalación"], motivos: ["paisaje"], emociones: ["contemplación", "extrañeza"]}, 
+      { file: "13-fader-duraznos.jpg", alt: "Entre duraznos floridos, de Fernando Fader, colección Amalita", title: "Fernando Fader, Entre duraznos floridos", autor: "Fernando Fader", anio: 1915, tecnica: ["pintura"], motivos: ["paisaje", "árboles", "personas"], emociones: ["calma", "melancolía"]},
+      { file: "14-solar-bripaisgente.jpg", alt: "Bri-País-Gente, de Xul Solar, colección Amalita", title: "Xul Solar, Bri-País-Gente", autor: "Xul Solar", anio: 1933, tecnica: ["pintura"], motivos: ["paisaje urbano", "multitud", "personas", "abstracción"], emociones: ["calma", "melancolía", "extrañeza"]},
+      { file: "15-solar-noche.jpg", alt: "Noche, de Xul Solar, colección Amalita", title: "Xul Solar, Noche", autor: "Xul Solar", anio: 1933, tecnica: ["pintura"], motivos: ["paisaje urbano", "multitud", "personas", "abstracción"], emociones: ["calma", "melancolía", "extrañeza"]},
+      { file: "16-solar-zigzag.jpg", alt: "Zig-zag, de Xul Solar, colección Amalita", title: "Xul Solar, Zig-zag", autor: "Xul Solar", anio: 1949, tecnica: ["pintura"], motivos: ["paisaje urbano", "multitud", "personas", "abstracción"], emociones: ["calma", "melancolía", "extrañeza"]},
+      { file: "17-solar-cupulas.jpg", alt: "Cúpulas, de Xul Solar, colección Amalita", title: "Xul Solar, Cúpulas", autor: "Xul Solar", anio: 1948, tecnica: ["pintura"], motivos: ["paisaje urbano", "multitud", "personas", "abstracción"], emociones: ["calma", "melancolía", "extrañeza"]},
+      { file: "18-solar-pantree.jpg", alt: "Pan-tree, de Xul Solar, colección Amalita", title: "Xul Solar, Pan-tree", autor: "Xul Solar", anio: 1954, tecnica: ["pintura"], motivos: ["abstracción"], emociones: ["extrañeza"]},
+      { file: "19-solar-pantree2.jpg", alt: "Pan-tree, de Xul Solar, colección Amalita", title: "Xul Solar, Pan-tree", autor: "Xul Solar", anio: 1953, tecnica: ["pintura"], motivos: ["abstracción"], emociones: ["extrañeza"]},
+      { file: "20-solar-horoscopomml.jpg", alt: "Horóscopo de Manuel Mujica Láinez, de Xul Solar, colección Amalita", title: "Xul Solar, Horóscopo de Manuel Mujica Láinez", autor: "Xul Solar", anio: 1953, tecnica: ["pintura"], motivos: ["abstracción"], emociones: ["extrañeza"]},
+      { file: "21-vidalquadras-retratoamalita.jpg", alt: "Retrato de la señora Amalia Lacroze de Fortabat, de Alejo Vidal–Quadras, colección Amalita", title: "Alejo Vidal–Quadras, Retrato de la señora Amalia Lacroze de Fortabat", autor: "Alejo Vidal–Quadras", anio: 1946, tecnica: ["pintura"], motivos: ["rostro"], emociones: ["contemplación"]},
+      { file: "22-vidalquadras-retratoalfredo.jpg", alt: "Retrato del señor Alfredo Fortabat, de Alejo Vidal–Quadras, colección Amalita", title: "Alejo Vidal–Quadras, Retrato del señor Alfredo Fortabat", autor: "Alejo Vidal–Quadras", anio: 1961, tecnica: ["pintura"], motivos: ["rostro"], emociones: ["contemplación"]},
+      { file: "23-vidalquadras-retratoamalita.jpg", alt: "Retrato de la señora Amalia Lacroze de Fortabat, de Alejo Vidal–Quadras, colección Amalita", title: "Alejo Vidal–Quadras, Retrato de la señora Amalia Lacroze de Fortabat", autor: "Alejo Vidal–Quadras", anio: 1962, tecnica: ["pintura"], motivos: ["rostro"], emociones: ["contemplación"]},
     ],
   },
 };
@@ -156,6 +198,14 @@ function buildAllNodes() {
         alt: img.alt,
         title: img.title || "", // autor/nombre de la obra deducido del archivo, si se pudo
         id: `node-${groupKey}-${i}`,
+        // Metadata curatorial — viaja con cada nodo para que buildConnectionPairs
+        // pueda comparar obras entre sí y conectarlas por criterios reales en vez
+        // de por cercanía en pantalla o por pertenecer al mismo museo.
+        autor: img.autor ?? null,
+        anio: img.anio ?? null,
+        tecnica: img.tecnica || [],
+        motivos: img.motivos || [],
+        emociones: img.emociones || [],
       });
     });
   });
@@ -201,27 +251,109 @@ function buildAllNodes() {
     (groupIndices[data.groupKey] ||= []).push(i);
   });
 
-  return { builtNodes, positions, groupIndices };
+  return { builtNodes, positions, groupIndices, flatData: flat };
 }
 
-function buildConnectionPairs(positions, groupIndices) {
-  const pairs = new Set();
-  Object.values(groupIndices).forEach((indices) => {
-    if (indices.length < 2) return;
-    indices.forEach((i) => {
-      indices
-        .filter((j) => j !== i)
-        .map((j) => {
-          const dx = positions[i].left - positions[j].left;
-          const dy = positions[i].top - positions[j].top;
-          return { j, d: dx * dx + dy * dy };
-        })
-        .sort((a, b) => a.d - b.d)
-        .slice(0, Math.min(NEIGHBORS_PER_NODE, indices.length - 1))
-        .forEach(({ j }) => pairs.add(i < j ? `${i}-${j}` : `${j}-${i}`));
-    });
+// ===========================================================================
+// CRITERIOS COMPARTIDOS
+// Compara dos obras y devuelve la lista de criterios en los que coinciden
+// (mismo autor, misma técnica, misma década, algún motivo en común, alguna
+// emoción en común). Todos los campos pueden venir null/vacíos (hay obras
+// sin autor o año todavía cargados) — por eso cada comparación se cubre con
+// su propio chequeo, así una obra incompleta nunca "matchea" en falso.
+//
+// Cada criterio encontrado se guarda como { tipo, valor } — no solo QUÉ tipo
+// de dato coincide, sino el valor concreto que comparten (ej. "autor":
+// "Frida Kahlo", "motivo": "paisaje") — así después se puede mostrar en la
+// leyenda de abajo "a qué responde" cada conexión.
+// ===========================================================================
+
+function decadaDe(anio) {
+  if (anio == null) return null;
+  return Math.floor(anio / 10) * 10;
+}
+
+function criteriosCompartidos(a, b) {
+  const criterios = [];
+
+  if (a.autor && b.autor && a.autor === b.autor) {
+    criterios.push({ tipo: "autor", valor: a.autor });
+  }
+
+  const tecnicasComunes = (a.tecnica || []).filter((t) => (b.tecnica || []).includes(t));
+  if (tecnicasComunes.length > 0) {
+    criterios.push({ tipo: "tecnica", valor: tecnicasComunes[0] });
+  }
+
+  const decadaA = decadaDe(a.anio);
+  const decadaB = decadaDe(b.anio);
+  if (decadaA !== null && decadaB !== null && decadaA === decadaB) {
+    criterios.push({ tipo: "decada", valor: `años ${decadaA}` });
+  }
+
+  const motivosComunes = (a.motivos || []).filter((m) => (b.motivos || []).includes(m));
+  if (motivosComunes.length > 0) {
+    criterios.push({ tipo: "motivo", valor: motivosComunes[0] });
+  }
+
+  const emocionesComunes = (a.emociones || []).filter((e) => (b.emociones || []).includes(e));
+  if (emocionesComunes.length > 0) {
+    criterios.push({ tipo: "emocion", valor: emocionesComunes[0] });
+  }
+
+  return criterios;
+}
+
+// ===========================================================================
+// CONEXIONES ENTRE OBRAS
+// Antes cada obra se conectaba solo con las más cercanas EN PANTALLA y solo
+// dentro de su propio museo. Ahora se compara CADA obra con TODAS las demás
+// (sin importar el museo) y se prioriza conectarla con las que comparten más
+// criterios curatoriales (autor, técnica, década, motivo, emoción). La
+// distancia en pantalla pasa a ser solo un desempate — y también un respaldo
+// para las obras que todavía no comparten ningún criterio con nadie, así
+// ninguna queda flotando sin ninguna línea.
+//
+// Cada conexión además guarda un `tipo`: el primer criterio compartido
+// (según el orden en que `criteriosCompartidos` los agrega, de más
+// específico — autor — a más general — emoción), que se usa después para
+// pintar la línea de un color distinto según qué la originó. Una conexión
+// que solo existe como respaldo por cercanía (sin ningún criterio en común)
+// queda con `tipo: null` y se dibuja neutra, como antes.
+// ===========================================================================
+
+function buildConnectionPairs(positions, flatData) {
+  const pairs = new Map(); // "i-j" -> { tipo, valor } | null
+  const total = flatData.length;
+
+  for (let i = 0; i < total; i++) {
+    const candidatos = [];
+    for (let j = 0; j < total; j++) {
+      if (j === i) continue;
+      const criterios = criteriosCompartidos(flatData[i], flatData[j]);
+      const dx = positions[i].left - positions[j].left;
+      const dy = positions[i].top - positions[j].top;
+      candidatos.push({ j, compartidos: criterios.length, criterio: criterios[0] || null, d: dx * dx + dy * dy });
+    }
+
+    candidatos
+      .sort((a, b) => b.compartidos - a.compartidos || a.d - b.d)
+      .slice(0, Math.min(NEIGHBORS_PER_NODE, candidatos.length))
+      .forEach(({ j, criterio }) => {
+        const key = i < j ? `${i}-${j}` : `${j}-${i}`;
+        // Un mismo par puede aparecer visto desde los dos nodos; si ya estaba
+        // guardado sin criterio (respaldo por cercanía) pero ahora aparece con
+        // uno compartido, nos quedamos con el que sí explica la conexión.
+        if (!pairs.has(key) || (pairs.get(key) === null && criterio)) {
+          pairs.set(key, criterio);
+        }
+      });
+  }
+
+  return Array.from(pairs, ([key, criterio]) => {
+    const [a, b] = key.split("-").map(Number);
+    return { a, b, tipo: criterio?.tipo || null, valor: criterio?.valor || null };
   });
-  return Array.from(pairs, (key) => key.split("-").map(Number));
 }
 
 // ===========================================================================
@@ -230,8 +362,9 @@ function buildConnectionPairs(positions, groupIndices) {
 // ===========================================================================
 
 function buildLines() {
-  lineEls = connectionPairs.map(() => {
+  lineEls = connectionPairs.map(({ tipo }) => {
     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    if (tipo) line.classList.add(`conexion-${tipo}`); // color por criterio, ver CSS
     svg.appendChild(line);
     return line;
   });
@@ -246,7 +379,7 @@ function updateLines() {
   svg.setAttribute("width", window.innerWidth);
   svg.setAttribute("height", window.innerHeight);
 
-  connectionPairs.forEach(([a, b], i) => {
+  connectionPairs.forEach(({ a, b }, i) => {
     const p1 = centerOf(nodes[a]);
     const p2 = centerOf(nodes[b]);
     const line = lineEls[i];
@@ -260,6 +393,118 @@ function updateLines() {
 function loop() {
   updateLines();
   requestAnimationFrame(loop);
+}
+
+// ===========================================================================
+// RESALTADO DE CONEXIONES + LEYENDA
+// Por defecto todas las líneas quedan grises, como al principio. Se revelan
+// con su color al pasar el mouse por una obra (se resaltan sus conexiones),
+// o al elegir uno o más criterios en la leyenda fija de abajo (se resaltan
+// todas las conexiones — y las obras — que responden a ese criterio en
+// particular, aunque el mouse no esté encima de nada).
+//
+// `hoverIndex` guarda el índice de la obra bajo el mouse (o null) y
+// `criteriosSeleccionados` los criterios elegidos en la leyenda, como
+// strings "tipo|valor" (ej. "motivo|paisaje"). `actualizarResaltado()` es la
+// única función que combina ambos y pinta el resultado; se llama cada vez
+// que cualquiera de los dos cambia.
+// ===========================================================================
+
+const leyendaEl = document.getElementById("leyenda-conexiones");
+
+let hoverIndex = null;
+const criteriosSeleccionados = new Set();
+
+function claveDe(par) {
+  return par.tipo && par.valor ? `${par.tipo}|${par.valor}` : null;
+}
+
+function actualizarResaltado() {
+  const hayAlgoResaltado = hoverIndex !== null || criteriosSeleccionados.size > 0;
+  const nodosRelevantes = new Set();
+  if (hoverIndex !== null) nodosRelevantes.add(hoverIndex);
+
+  connectionPairs.forEach((par, i) => {
+    const clave = claveDe(par);
+    const porHover = hoverIndex !== null && (par.a === hoverIndex || par.b === hoverIndex);
+    const porCriterio = clave !== null && criteriosSeleccionados.has(clave);
+    const destacada = porHover || porCriterio;
+    lineEls[i].classList.toggle("destacada", destacada);
+    if (destacada) {
+      nodosRelevantes.add(par.a);
+      nodosRelevantes.add(par.b);
+    }
+  });
+
+  svg.classList.toggle("resaltando", hayAlgoResaltado);
+  nodesLayer.classList.toggle("resaltando", hayAlgoResaltado);
+  nodes.forEach((node, i) => {
+    node.classList.toggle("obra-resaltada", nodosRelevantes.has(i));
+  });
+}
+
+function attachHoverHighlight(nodeEls) {
+  nodeEls.forEach((node, i) => {
+    node.addEventListener("mouseenter", () => {
+      hoverIndex = i;
+      actualizarResaltado();
+    });
+    node.addEventListener("mouseleave", () => {
+      hoverIndex = null;
+      actualizarResaltado();
+    });
+  });
+}
+
+// Orden en el que se listan los criterios en la leyenda: de más específico
+// (autor) a más general (emoción) — el mismo orden en que se buscan en
+// criteriosCompartidos().
+const ORDEN_TIPOS = ["autor", "tecnica", "decada", "motivo", "emocion"];
+const ETIQUETA_TIPO = {
+  autor: "autor",
+  tecnica: "técnica",
+  decada: "década",
+  motivo: "motivo",
+  emocion: "emoción",
+};
+
+function listarCriteriosExistentes(pairs) {
+  const vistos = new Map(); // "tipo|valor" -> { tipo, valor }
+  pairs.forEach((par) => {
+    const clave = claveDe(par);
+    if (clave && !vistos.has(clave)) vistos.set(clave, { tipo: par.tipo, valor: par.valor });
+  });
+
+  return Array.from(vistos.values()).sort((a, b) => {
+    const ordenTipo = ORDEN_TIPOS.indexOf(a.tipo) - ORDEN_TIPOS.indexOf(b.tipo);
+    return ordenTipo !== 0 ? ordenTipo : a.valor.localeCompare(b.valor, "es");
+  });
+}
+
+function renderLeyenda(criterios) {
+  if (!leyendaEl) return;
+
+  criterios.forEach(({ tipo, valor }) => {
+    const clave = `${tipo}|${valor}`;
+    const boton = document.createElement("button");
+    boton.type = "button";
+    boton.className = `leyenda-conexiones__item leyenda-conexiones__item--${tipo}`;
+    boton.textContent = `${ETIQUETA_TIPO[tipo] || tipo}: ${valor}`;
+    boton.setAttribute("aria-pressed", "false");
+
+    boton.addEventListener("click", () => {
+      const activo = criteriosSeleccionados.has(clave);
+      if (activo) {
+        criteriosSeleccionados.delete(clave);
+      } else {
+        criteriosSeleccionados.add(clave);
+      }
+      boton.setAttribute("aria-pressed", String(!activo));
+      actualizarResaltado();
+    });
+
+    leyendaEl.appendChild(boton);
+  });
 }
 
 // ===========================================================================
@@ -434,11 +679,13 @@ document.querySelectorAll(".video-hover").forEach((wrap) => {
 // navegador no baja las que están ocultas hasta que la sección se muestra.
 // ===========================================================================
 
-const { builtNodes, positions, groupIndices } = buildAllNodes();
+const { builtNodes, positions, flatData } = buildAllNodes();
 nodes = builtNodes;
-connectionPairs = buildConnectionPairs(positions, groupIndices);
+connectionPairs = buildConnectionPairs(positions, flatData);
 
 attachNodeInteractions(nodes);
+attachHoverHighlight(nodes);
+renderLeyenda(listarCriteriosExistentes(connectionPairs));
 
 buildLines();
 updateLines();
