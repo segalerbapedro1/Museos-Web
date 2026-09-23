@@ -83,6 +83,24 @@ const NODE_GROUPS = {
       { file: "04-torresgarcia-composicion.jpg", alt: "Composición simétrica universal, de Joaquín Torres García, colección MALBA", title: "Joaquín Torres García, Composición simétrica universal", autor: "Joaquín Torres García", anio: 1931, tecnica: ["pintura"], motivos: ["abstracción"], emociones: ["extrañeza"] },
       { file: "05-solar-pareja.jpg", alt: "Pareja, de Xul Solar, colección MALBA", title: "Xul Solar, Pareja",
         autor: "Xul Solar", anio: 1923, tecnica: ["pintura"], motivos: ["cuerpos", "dualidad", "rostro"], emociones: ["extrañeza"]},
+      { file: "10-delavega-rompecabezas.jpg", alt: "Rompecabezas, de Jorge de la Vega, colección MALBA", title: "Jorge de la Vega, Rompecabezas", autor: "Jorge de la Vega", anio: 1969, tecnica: ["pintura"], motivos: ["cuerpos", "rostro"], emociones: ["extrañeza"]},
+      { file: "11-varo-icono1945.jpg", alt: "Ícono, de Remedios Varo, colección MALBA", title: "Remedios Varo, Ícono", autor: "Remedios Varo", anio: 1945, tecnica: ["pintura"], motivos: ["paisaje"], emociones: ["extrañeza"]},
+      { file: "12-petorutti-lacanciondelpueblo.jpg", alt: "La canción del pueblo, de Emilio Petorutti, colección MALBA", title: "Emilio Petorutti, La canción del pueblo", autor: "Emilio Petorutti", anio: 1927, tecnica: ["pintura"], motivos: ["cuerpos", "paisaje urbano"], emociones: ["extrañeza"]},
+      { file: "13-rivera-retratoderamongomezdelaserna.jpg", alt: "Retrato de Ramón Gómez de la Serna, de Diego Rivera, colección MALBA", title: "Diego Rivera, Retrato de Ramón Gómez de la Serna", autor: "Diego Rivera", anio: 1915, tecnica: ["pintura"], motivos: ["rostro"], emociones: ["extrañeza"]},
+      { file: "14-martins-oimpossivel.jpg", alt: "O Impossivel, de María Martins, colección MALBA", title: "María Martins, O Impossivel", autor: "María Martins", anio: 1945, tecnica: ["escultura"], motivos: ["personas", "cuerpos", "dualidad"], emociones: ["extrañeza", "tensión"]},
+      { file: "15-prati-composicionserial.jpg", alt: "Composición serial, de Lidy Prati, colección MALBA", title: "Lidy Prati, Composición serial", autor: "Lidy Prati", anio: 1948, tecnica: ["pintura"], motivos: ["abstracción"], emociones: ["calma"]},
+      { file: "16-torresgarcia-escenacallejera.jpg", alt: "Escena callejera o Calle de París o Constructivo, de Joaquín Torres García, colección MALBA", title: "Joaquín Torres García, Escena callejera o Calle de París o Constructivo", autor: "Joaquín Torres García", anio: 1930, tecnica: ["pintura"], motivos: ["cuerpos", "multitud", "paisaje urbano"], emociones: ["extrañeza"] },
+      { file: "17-solar-dosmestizos.jpg", alt: "Dos mestizos de avión y gente, de Xul Solar, colección MALBA", title: "Xul Solar, Dos mestizos de avión y gente", autor: "Xul Solar", anio: 1935, tecnica: ["pintura"], motivos: ["cuerpos", "dualidad", "paisaje", "multitud"], emociones: ["extrañeza", "tensión"] },  
+      { file: "18-solar-ronda.jpg", alt: "Ronda, de Xul Solar, colección MALBA", title: "Xul Solar, Ronda", autor: "Xul Solar", anio: 1925, tecnica: ["pintura"], motivos: ["cuerpos", "paisaje", "multitud"], emociones: ["extrañeza"] }, 
+      { file: "19-solar-sandanza.jpg", alt: "San Danza, de Xul Solar, colección MALBA", title: "Xul Solar, San Danza", autor: "Xul Solar", anio: 1925, tecnica: ["pintura"], motivos: ["cuerpos", "multitud"], emociones: ["extrañeza"] }, 
+      { file: "20-solar-jol.jpg", alt: "Jol, de Xul Solar, colección MALBA", title: "Xul Solar, Jol", autor: "Xul Solar", anio: 1926, tecnica: ["pintura"], motivos: ["cuerpos", "multitud", "paisaje urbano"], emociones: ["extrañeza"] },   
+      { file: "21-solar-tres.jpg", alt: "Los tres, de Xul Solar, colección MALBA", title: "Xul Solar, Los tres", autor: "Xul Solar", anio: 1923, tecnica: ["pintura"], motivos: ["cuerpos"], emociones: ["extrañeza"] },
+      { file: "22-oiticica-metaesquema.jpg", alt: "Metaesquema, de Hélio Oiticica, colección MALBA", title: "Hélio Oiticica, Metaesquema", autor: "Hélio Oiticica", anio: 1958, tecnica: ["pintura"], motivos: ["abstracción"], emociones: ["calma"] },
+      { file: "23-lindner-portfolio.jpg", alt: "Portfolio de 120 dibujos, de Lux Lindner, colección MALBA", title: "Lux Lindner, Portfolio de 120 dibujos", autor: "Lux Lindner", anio: 1991, tecnica: ["dibujo"], motivos: ["abstracción", "cuerpos", "rostro", "personas"], emociones: ["calma"] },
+      { file: "24-schvartz-batato.jpg", alt: "Batato, de Marcia Schvartz, colección MALBA", title: "Marcia Schvartz, Batato", autor: "Marcia Schvartz", anio: 1989, tecnica: ["pintura"], motivos: ["cuerpos", "rostro", "personas"], emociones: ["tensión", "contemplación", "melancolía"] },
+      { file: "25-deira-nuevevariaciones.jpg", alt: "Nueve variaciones para un bastidor bien tensado, de Ernesto Deira, colección MALBA", title: "Ernesto Deira, Nueve variaciones para un bastidor bien tensado", autor: "Ernesto Deira", anio: 1965, tecnica: ["pintura"], motivos: ["abstracción", "cuerpos", "rostro", "personas"], emociones: ["confusión", "tensión"] },
+      { file: "26-heinrich-lamano.jpg", alt: "La mano, de Annemarie Heinrich, colección MALBA", title: "Annemarie Heinrich, La mano", autor: "Annemarie Heinrich", anio: 1953, tecnica: ["fotografía"], motivos: ["cuerpos", "rostro", "personas"], emociones: ["confusión", "extrañeza"] },
+      { file: "27-pla-milcarassarli.jpg", alt: "Las mil caras de Isabel Sarli, de Eduardo Pla, colección MALBA", title: "Eduardo Pla, Las mil caras de Isabel Sarli", autor: "Eduardo Pla", anio: 2006, tecnica: ["fotografía"], motivos: ["cuerpos", "rostro", "personas"], emociones: ["melancolía", "extrañeza"] },
     ],
   },
 
@@ -905,14 +923,13 @@ requestAnimationFrame(loop);
 window.addEventListener("resize", updateLines);
 
 // ===========================================================================
-// SECCIÓN "RECORRIDO"
+// SECCIÓN "RECORRIDO" EN MOBILE
 // La capa de nodos es una sola y es fixed (cubre toda la pantalla siempre,
-// esté donde esté en el HTML). La clase .mostrar-recorrido se agrega/saca
-// en <body> según "Recorrido" entra o sale del viewport, y de ella cuelgan
-// dos cosas: en mobile, que la capa de nodos se muestre (ver style.css —
-// en mobile los nodos no van de fondo del ensayo, taparían el texto en una
-// pantalla chica); en cualquier tamaño de pantalla, que se vea la barra de
-// leyenda de abajo — no tiene sentido mientras se está leyendo "Ensayo".
+// esté donde esté en el HTML). En desktop se deja ver todo el tiempo. En
+// mobile, en cambio, arrancaría tapando el texto del "Ensayo" — por eso ahí
+// queda oculta por CSS y solo se muestra mientras la sección "Recorrido"
+// está en pantalla, agregando/sacando la clase .mostrar-recorrido en
+// <body> según entra o sale del viewport.
 // ===========================================================================
 
 const recorridoSection = document.getElementById("recorrido");
@@ -921,12 +938,6 @@ if (recorridoSection && "IntersectionObserver" in window) {
     (entries) => {
       entries.forEach((entry) => {
         document.body.classList.toggle("mostrar-recorrido", entry.isIntersecting);
-        // Si alguien deja armado un "recorrido propio" y se va de la
-        // sección, el botón para apagarlo desaparece con la barra — para
-        // no dejarlo trabado ahí, se apaga solo al salir.
-        if (!entry.isIntersecting && modoRecorridoPropio) {
-          alternarModoRecorridoPropio();
-        }
       });
     },
     { threshold: 0.15 }
