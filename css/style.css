@@ -154,12 +154,14 @@ code {
   /* Solo tiene sentido mientras las obras están a la vista, así que sigue
      la misma clase en <body> que ya prende/apaga el IntersectionObserver
      de "Recorrido" al final de script.js (antes esto solo pasaba en
-     mobile; ahora es igual en cualquier tamaño de pantalla). */
+     mobile; ahora es igual en cualquier tamaño de pantalla). Ahora es una
+     columna: arriba la fila fija de controles (siempre visible), abajo el
+     panel de criterios (ver .criterios-panel), que arranca oculto y solo
+     se ve al apretar "Criterios de conexión". */
   display: none;
-  gap: 0.5rem;
-  align-items: center;
-  padding: 0.65rem 1rem;
-  overflow-x: auto;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
   background: rgba(20, 18, 16, 0.82);
   backdrop-filter: blur(6px);
   border-top: 1px solid var(--line);
@@ -169,6 +171,14 @@ code {
 }
 body.mostrar-recorrido .leyenda-conexiones {
   display: flex;
+}
+
+.leyenda-conexiones__controles {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  overflow-x: auto;
 }
 
 .leyenda-conexiones__item {
@@ -227,6 +237,87 @@ body.mostrar-recorrido .leyenda-conexiones {
   font-size: 0.65rem;
   color: var(--ink-tenue);
   white-space: nowrap;
+}
+
+/* Botón que abre/cierra el panel de criterios — de entrada usa los 4
+   colores que ya tenía cada tipo de criterio (motivo/emoción/técnica/
+   década) en una franja de 4 partes, así de un vistazo se ve qué hay
+   adentro sin tener que abrirlo todavía. */
+.leyenda-conexiones__toggle-criterios {
+  font-weight: 700;
+  background: linear-gradient(
+    90deg,
+    rgba(var(--conexion-motivo), 0.5) 0%, rgba(var(--conexion-motivo), 0.5) 25%,
+    rgba(var(--conexion-emocion), 0.5) 25%, rgba(var(--conexion-emocion), 0.5) 50%,
+    rgba(var(--conexion-tecnica), 0.5) 50%, rgba(var(--conexion-tecnica), 0.5) 75%,
+    rgba(var(--conexion-decada), 0.5) 75%, rgba(var(--conexion-decada), 0.5) 100%
+  );
+}
+.leyenda-conexiones__toggle-criterios:hover,
+.leyenda-conexiones__toggle-criterios:focus-visible {
+  background: linear-gradient(
+    90deg,
+    rgba(var(--conexion-motivo), 0.75) 0%, rgba(var(--conexion-motivo), 0.75) 25%,
+    rgba(var(--conexion-emocion), 0.75) 25%, rgba(var(--conexion-emocion), 0.75) 50%,
+    rgba(var(--conexion-tecnica), 0.75) 50%, rgba(var(--conexion-tecnica), 0.75) 75%,
+    rgba(var(--conexion-decada), 0.75) 75%, rgba(var(--conexion-decada), 0.75) 100%
+  );
+}
+.leyenda-conexiones__toggle-criterios[aria-expanded="true"] {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* Panel de criterios — oculto por default (atributo `hidden` en el HTML,
+   script.js lo saca/pone al clickear el botón de arriba). Agrupa los
+   botones que arma renderLeyenda() en 4 filas fijas, una por tipo, en el
+   mismo orden que ORDEN_TIPOS — cada fila con su etiqueta del color que
+   ya identificaba a ese tipo en las líneas de conexión. */
+.criterios-panel {
+  display: none;
+  flex-direction: column;
+  gap: 0.55rem;
+  max-height: 42vh;
+  overflow-y: auto;
+  padding: 0.6rem 1rem 0.85rem;
+  border-top: 1px solid var(--line);
+}
+.criterios-panel:not([hidden]) {
+  display: flex;
+}
+
+.criterios-panel__grupo {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+/* Si un tipo no tiene ningún criterio (raro, pero por las dudas — ver
+   renderLeyenda), script.js le pone [hidden] al grupo entero. */
+.criterios-panel__grupo[hidden] {
+  display: none;
+}
+
+.criterios-panel__etiqueta {
+  flex: 0 0 auto;
+  min-width: 4.2em;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-tenue);
+}
+.criterios-panel__etiqueta--motivo  { color: rgb(var(--conexion-motivo)); }
+.criterios-panel__etiqueta--emocion { color: rgb(var(--conexion-emocion)); }
+.criterios-panel__etiqueta--tecnica { color: rgb(var(--conexion-tecnica)); }
+.criterios-panel__etiqueta--decada  { color: rgb(var(--conexion-decada)); }
+
+.criterios-panel__items {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 1 1 auto;
 }
 
 /* Mientras se arma el recorrido propio, los filtros por criterio de la red
@@ -341,6 +432,30 @@ body.mostrar-recorrido .filtro-museos {
   background: var(--paper-panel);
   border-radius: 3px;
   pointer-events: none; /* que no le robe el click/arrastre a las obras de atrás */
+}
+
+/* Estado vacío (ver actualizarEstadoVacio() en script.js): aparece
+   centrado en pantalla cuando el filtro de museo y los criterios elegidos
+   en el panel de abajo se cruzan sin dejar ninguna obra en común. Mismo
+   lenguaje visual que .recorrido-hint (panel oscuro, mono), pero fijo y
+   centrado en vez de flotar al pie del layout de "Recorrido". */
+.estado-vacio {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4; /* por debajo de la leyenda/panel (5) pero por encima de los nodos */
+  margin: 0;
+  max-width: 22em;
+  padding: 0.7rem 1.1rem;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  color: var(--ink-tenue);
+  background: var(--paper-panel);
+  border-radius: 3px;
+  pointer-events: none; /* solo informa, no bloquea nada de atrás */
 }
 
 /* ==========================================================================
@@ -924,12 +1039,20 @@ mark {
   .site-nav { gap: 1.1rem; font-size: 0.68rem; }
 
   /* El display:none/flex según .mostrar-recorrido ya es global (ver
-     arriba) — acá solo quedan los ajustes de tamaño propios de mobile. */
-  .leyenda-conexiones { font-size: 0.62rem; padding: 0.5rem 0.75rem; }
+     arriba) — acá solo quedan los ajustes de tamaño propios de mobile. El
+     padding ahora vive en .leyenda-conexiones__controles y .criterios-panel
+     (la barra en sí ya no tiene, ver arriba), así que se achican los dos
+     por separado. */
+  .leyenda-conexiones { font-size: 0.62rem; }
+  .leyenda-conexiones__controles { padding: 0.5rem 0.75rem; }
+  .criterios-panel { padding: 0.5rem 0.75rem 0.7rem; max-height: 50vh; }
+  .criterios-panel__etiqueta { min-width: 3.6em; }
 
   /* Mismo criterio para el filtro por museo: un poco más chico y más cerca
      del borde para no comerse tanto ancho en una pantalla angosta. */
   .filtro-museos { top: 3.6rem; right: 0.6rem; font-size: 0.6rem; padding: 0.45rem; }
+
+  .estado-vacio { font-size: 0.7rem; max-width: 85vw; }
 }
 
 @media (prefers-reduced-motion: reduce) {

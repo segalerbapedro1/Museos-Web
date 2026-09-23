@@ -22,7 +22,7 @@ const MOTIVOS_POSIBLES = [
   "animales", "arquitectura", "árboles", "cuerpos", "dualidad",
   "figura solitaria", "mapa", "multitud", "objetos",
   "paisaje", "paisaje urbano", "tormenta", "rostro",
-  "ruido", "silencio", "diurnas", "nocturnas", "favoritas",
+  "ruido", "silencio", "diurnas", "nocturnas",
 ];
 
 const EMOCIONES_POSIBLES = [
@@ -584,6 +584,40 @@ function actualizarResaltado() {
   nodes.forEach((node, i) => {
     node.classList.toggle("obra-resaltada", nodosRelevantes.has(i));
   });
+
+  actualizarEstadoVacio(nodosRelevantes);
+}
+
+// ===========================================================================
+// ESTADO VACÍO
+// El filtro por museo (arriba a la derecha) y los criterios elegidos acá
+// abajo son dos filtros independientes (ver comentario en la sección
+// FILTRO POR MUSEO) — cruzarlos puede dejar CERO obras en común (ej.
+// filtrar "Sala Pays" y elegir un criterio que solo comparten obras del
+// Malba). Como ninguna obra queda "obra-resaltada" ni "fuera-de-filtro" al
+// mismo tiempo, sin este aviso la pantalla se ve simplemente atenuada por
+// completo, sin ninguna pista de qué pasó.
+// ===========================================================================
+
+const estadoVacioEl = document.getElementById("estado-vacio");
+
+function actualizarEstadoVacio(nodosRelevantes) {
+  if (!estadoVacioEl) return;
+
+  // Solo tiene sentido evaluarlo cuando los dos filtros están activos a la
+  // vez — con uno solo (o ninguno) siempre hay alguna obra en común, por
+  // construcción (ver listarCriteriosExistentes: un criterio solo aparece
+  // en la leyenda si ya lo comparten al menos dos obras).
+  const corresponde = museoFiltroActivo !== null && criteriosSeleccionados.size > 0;
+  if (!corresponde) {
+    estadoVacioEl.hidden = true;
+    return;
+  }
+
+  const hayCoincidencia = nodes.some(
+    (node, i) => nodosRelevantes.has(i) && node.dataset.grupo === museoFiltroActivo
+  );
+  estadoVacioEl.hidden = hayCoincidencia;
 }
 
 function attachHoverHighlight(nodeEls) {
@@ -628,10 +662,26 @@ function listarCriteriosExistentes(pairs) {
   });
 }
 
+// Panel colapsable de criterios (ver index.html #criterios-panel): cada
+// tipo tiene su propio contenedor fijo con data-tipo-items="<tipo>", así
+// renderLeyenda no arma la lista plana de antes sino que reparte cada
+// botón en la fila de su tipo — misma agrupación por color que ya existía,
+// ahora también agrupada en el layout.
+const criteriosPanelEl = document.getElementById("criterios-panel");
+const contenedoresPorTipo = {};
+if (criteriosPanelEl) {
+  criteriosPanelEl.querySelectorAll("[data-tipo-items]").forEach((el) => {
+    contenedoresPorTipo[el.dataset.tipoItems] = el;
+  });
+}
+
 function renderLeyenda(criterios) {
   if (!leyendaEl) return;
 
   criterios.forEach(({ tipo, valor }) => {
+    const contenedor = contenedoresPorTipo[tipo];
+    if (!contenedor) return; // tipo sin fila propia en el HTML — no debería pasar
+
     const clave = `${tipo}|${valor}`;
     const boton = document.createElement("button");
     boton.type = "button";
@@ -653,7 +703,26 @@ function renderLeyenda(criterios) {
       actualizarResaltado();
     });
 
-    leyendaEl.appendChild(boton);
+    contenedor.appendChild(boton);
+  });
+
+  // Un grupo sin ningún botón adentro (tipo que no aparece hoy en ninguna
+  // conexión) se oculta entero, para no dejar una etiqueta ("Década", por
+  // ejemplo) flotando sin nada al lado.
+  if (criteriosPanelEl) {
+    criteriosPanelEl.querySelectorAll(".criterios-panel__grupo").forEach((grupo) => {
+      const items = grupo.querySelector(".criterios-panel__items");
+      grupo.hidden = !items || items.children.length === 0;
+    });
+  }
+}
+
+const botonCriterios = document.getElementById("boton-criterios");
+if (botonCriterios && criteriosPanelEl) {
+  botonCriterios.addEventListener("click", () => {
+    const abrir = criteriosPanelEl.hidden;
+    criteriosPanelEl.hidden = !abrir;
+    botonCriterios.setAttribute("aria-expanded", String(abrir));
   });
 }
 
@@ -799,6 +868,10 @@ function setFiltroMuseo(grupo) {
     });
   }
   aplicarFiltroMuseo();
+  // El cruce entre este filtro y los criterios ya elegidos puede haber
+  // cambiado (ver ESTADO VACÍO) — actualizarResaltado ya recalcula todo lo
+  // demás igual, así que alcanza con volver a llamarla.
+  actualizarResaltado();
 }
 
 if (filtroMuseosEl) {

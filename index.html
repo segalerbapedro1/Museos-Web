@@ -18,7 +18,7 @@
   =================================================================== -->
   <nav class="site-nav" aria-label="Secciones del sitio">
     <a href="#ensayo">Ensayo</a>
-    <a href="#recorrido">Recorrido</a>
+    <a href="#recorrido">Colección</a>
   </nav>
 
   <!-- ===================================================================
@@ -55,21 +55,52 @@
   </nav>
 
   <!-- ===================================================================
-       LEYENDA DE CONEXIONES — barra fija abajo. Arranca con dos controles
-       fijos escritos acá a mano (armar/reiniciar el "recorrido propio",
-       ver script.js sección RECORRIDO PROPIO) y a partir de ahí sigue un
-       botón por cada criterio de conexión que realmente existe entre las
-       obras (ej. "pintura", "rostro") — esos los agrega solo script.js a
-       partir de las conexiones ya calculadas, no hace falta tocarlos acá.
-       Al pasar el mouse por una obra o clickear uno de estos botones se
-       resaltan las conexiones/obras correspondientes.
+       LEYENDA DE CONEXIONES — barra fija abajo. Fila de controles fijos
+       escritos acá a mano (armar/reiniciar "mi colección", ver script.js
+       sección RECORRIDO PROPIO, y el botón que abre/cierra el panel de
+       criterios) y, debajo, el panel de criterios propiamente dicho —
+       arranca cerrado (hay que apretar el botón para verlo). Adentro del
+       panel, script.js reparte solo los botones de criterio que realmente
+       existen entre las obras (ej. "pintura", "rostro") en 4 grupos fijos
+       (motivo, emoción, técnica, década — mismos colores que ya tenían),
+       cada uno en su contenedor con data-tipo-items correspondiente; no
+       hace falta tocar esto a mano al sumar obras nuevas. Al pasar el
+       mouse por una obra o clickear uno de estos botones se resaltan las
+       conexiones/obras correspondientes.
   =================================================================== -->
   <nav id="leyenda-conexiones" class="leyenda-conexiones" aria-label="Criterios de conexión entre obras">
-    <button type="button" id="boton-recorrido-propio" class="leyenda-conexiones__item leyenda-conexiones__item--recorrido-propio" aria-pressed="false">Armar mi recorrido</button>
-    <button type="button" id="boton-reiniciar-recorrido" class="leyenda-conexiones__item leyenda-conexiones__item--reiniciar" hidden>Reiniciar recorrido</button>
-    <span id="recorrido-propio-hint" class="recorrido-propio-hint" hidden>Clickeá las obras en el orden que quieras — clickeá una ya elegida para sacarla.</span>
-    <span class="leyenda-conexiones__separador" aria-hidden="true"></span>
+    <div class="leyenda-conexiones__controles">
+      <button type="button" id="boton-recorrido-propio" class="leyenda-conexiones__item leyenda-conexiones__item--recorrido-propio" aria-pressed="false">Armar mi colección</button>
+      <button type="button" id="boton-reiniciar-recorrido" class="leyenda-conexiones__item leyenda-conexiones__item--reiniciar" hidden>Reiniciar colección</button>
+      <span id="recorrido-propio-hint" class="recorrido-propio-hint" hidden>Clickeá las obras en el orden que quieras — clickeá una ya elegida para sacarla.</span>
+      <span class="leyenda-conexiones__separador" aria-hidden="true"></span>
+      <button type="button" id="boton-criterios" class="leyenda-conexiones__item leyenda-conexiones__toggle-criterios" aria-expanded="false" aria-controls="criterios-panel">Criterios de conexión</button>
+    </div>
+    <div id="criterios-panel" class="criterios-panel" hidden>
+      <div class="criterios-panel__grupo" data-tipo-grupo="motivo">
+        <span class="criterios-panel__etiqueta criterios-panel__etiqueta--motivo">Motivo</span>
+        <div class="criterios-panel__items" data-tipo-items="motivo"></div>
+      </div>
+      <div class="criterios-panel__grupo" data-tipo-grupo="emocion">
+        <span class="criterios-panel__etiqueta criterios-panel__etiqueta--emocion">Emoción</span>
+        <div class="criterios-panel__items" data-tipo-items="emocion"></div>
+      </div>
+      <div class="criterios-panel__grupo" data-tipo-grupo="tecnica">
+        <span class="criterios-panel__etiqueta criterios-panel__etiqueta--tecnica">Técnica</span>
+        <div class="criterios-panel__items" data-tipo-items="tecnica"></div>
+      </div>
+      <div class="criterios-panel__grupo" data-tipo-grupo="decada">
+        <span class="criterios-panel__etiqueta criterios-panel__etiqueta--decada">Década</span>
+        <div class="criterios-panel__items" data-tipo-items="decada"></div>
+      </div>
+    </div>
   </nav>
+
+  <!-- Mensaje de estado vacío: aparece cuando el filtro de museo (arriba a
+       la derecha) y los criterios elegidos en el panel de abajo se cruzan
+       sin dejar ninguna obra en común — ver actualizarEstadoVacio() en
+       script.js. -->
+  <p id="estado-vacio" class="estado-vacio" hidden>No hay obras que combinen ese museo con esos criterios — probá sacar alguno.</p>
 
   <!-- ===================================================================
        SECCIÓN "ENSAYO" — el texto, en su propia sección para poder
@@ -244,7 +275,7 @@
        sueltas. En mobile es la única forma de verlas (ver style.css).
   =================================================================== -->
   <section id="recorrido" class="page-section page-section--recorrido">
-    <p class="recorrido-hint">Recorrido — arrastrá o tocá una obra para ampliarla.</p>
+    <p class="recorrido-hint">Colección — arrastrá o tocá una obra para ampliarla.</p>
   </section>
 
   <!-- ===================================================================
